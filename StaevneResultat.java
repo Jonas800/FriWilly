@@ -1,6 +1,6 @@
 import java.time.LocalDate;
-public class StaevneResultater{
-   private int medlem_id;
+public class StaevneResultat{
+   private int medlemID;
    private String disciplin;
    private double tid;
    private LocalDate dato;

@@ -7,7 +7,5 @@ public class Medlem{
    private String navn;
    private LocalDate fdato;
    private double kontigent;
-   private boolean aktivitetsform;'
-   
-   fgidfhgif
+   private boolean aktivitetsform;
 }
