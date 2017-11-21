@@ -1,5 +1,6 @@
 public class KonkurrenceSvoemmer extends Medlem{
-   ArrayList<TraeningsResultater> trList;
-   ArrayList<StaevneResultater> stList;
+   ArrayList<TraeningsResultat> trList;
+   ArrayList<StaevneResultat> stList;
    private String traener;
+  
 }

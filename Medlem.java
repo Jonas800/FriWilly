@@ -45,11 +45,9 @@ public class Medlem{
       if(aktivitetsform = true){
          if (alder < 18){
             kontigent = 1000;
-            
          }
          else if (alder >= 18 && alder < 60){
             kontigent = 1600;
-         
          }  
          else{
             kontigent = (double) 1600*0.75;
@@ -60,6 +58,7 @@ public class Medlem{
       }
       return kontigent;
    }
+   
    public boolean getAktivitetsform(){
       return aktivitetsform;
    }
