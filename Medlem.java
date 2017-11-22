@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.io.*;
 
@@ -6,23 +7,25 @@ public class Medlem{
    
    private int id;
    private String navn;
-   private LocalDate fdato;
+   private int alder;
    private double kontigent;
    private boolean aktivitetsform;
+   private LocalDate fdato;
    
-   public Medlem(int id, String navn, String fdatoString, boolean aktivitetsform){
-      LocalDate fdato = LocalDate.parse(fdatoString);
+   public Medlem(int id, String navn, String fdatoString, boolean aktivitetsform) throws Exception{
+      this.alder = setAlder(fdatoString);
+      this.fdato = LocalDate.parse(fdatoString);
       this.id = id;
       this.navn = navn;
-      this.kontigent = getKontigent();
       this.aktivitetsform = aktivitetsform;
+      this.kontigent = getKontigent();
    }
    public void saveToFile(String filename)throws Exception{
       PrintStream output = new PrintStream(new File(filename));
       output.print(toString() + "\r\n");
    }
    public String toString(){
-      return id + navn + fdato + kontigent + aktivitetsform;
+      return id + navn + alder + kontigent + aktivitetsform + fdato;
    }
 
    public int getID(){
@@ -31,16 +34,13 @@ public class Medlem{
    public String getNavn(){
       return navn;
    }
-   public LocalDate getFdato(){
-      return fdato;
-   }
-   public int getAlder(){
+   public int setAlder(String fdatoString){
+      LocalDate fdato = LocalDate.parse(fdatoString);
       int alder = (int) ChronoUnit.YEARS.between(fdato, LocalDate.now());
       return alder;
    }
    
-   public double getKontigent(){
-      int alder = getAlder();
+   public double getKontigent() throws Exception{
       double kontigent = 0;
       if(aktivitetsform = true){
          if (alder < 18){
@@ -68,13 +68,12 @@ public class Medlem{
    public void setNavn(String navn){
       this.navn = navn;
    }
-   public void setFdato(String fdatoString){
-      LocalDate fdato = LocalDate.parse(fdatoString);
-   }
    public void setKontigent(double kontigent){
       this.kontigent = kontigent;
    }
    public void setAktivitetsform(boolean aktivitetsform){
       this.aktivitetsform = aktivitetsform;
    }
+   
+
 }

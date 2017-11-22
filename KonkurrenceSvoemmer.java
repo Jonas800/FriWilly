@@ -1,26 +1,45 @@
 import java.util.*;
 import java.io.*;
 public class KonkurrenceSvoemmer extends Medlem{
-   private ArrayList<TraeningsResultat> trList;
-   private ArrayList<StaevneResultat> stList;
+   private ArrayList<TraeningsResultat> TRList;
+   private ArrayList<StaevneResultat> SRList;
    private String traener;
   
-   public KonkurrenceSvoemmer(int id, String navn, String fdatoString, boolean aktivitetsform, String traener){
+   public KonkurrenceSvoemmer(int id, String navn, String fdatoString, boolean aktivitetsform, String traener) throws Exception{
       super(id, navn, fdatoString, aktivitetsform);
       this.traener = traener;
-      this.stList = new ArrayList<StaevneResultat>();
-      this.trList = new ArrayList<TraeningsResultat>();
-      udfyldStList(stList);
-      udfyldTrList(trList);
+      this.SRList = new ArrayList<StaevneResultat>();
+      this.TRList = new ArrayList<TraeningsResultat>();
+      udfyldSRList(SRList);
+      udfyldTRList(TRList);
    }
    
-   private void udfyldStList(ArrayList<StaevneResultat> list){
-      Scanner scanner = new Scanner(new File("staevneresultater.txt"));
-      
+   private void udfyldSRList(ArrayList<StaevneResultat> list) throws FileNotFoundException{
+      Scanner scanner = new Scanner(new File("staevneresultater.txt")).useLocale(Locale.GERMANY);
+      while(scanner.hasNextLine()){
+      int medlemID = scanner.nextInt();
+         if(medlemID == super.getID()){
+            StaevneResultat sr = new StaevneResultat(medlemID, scanner.next(), scanner.nextDouble(), scanner.next(), scanner.next());
+            list.add(sr);
+         }
+         else{
+            scanner.nextLine();
+         }
+      }
    }
-   private void udfyldTrList(ArrayList<TraeningsResultat> list){
+   private void udfyldTRList(ArrayList<TraeningsResultat> list) throws FileNotFoundException{
       Scanner scanner = new Scanner(new File("traeningsresultater.txt"));
-
+      while(scanner.hasNextLine()){
+      int medlemID = scanner.nextInt();
+         if(medlemID == super.getID()){
+            TraeningsResultat tr = new TraeningsResultat(medlemID, scanner.nextDouble(), scanner.next());
+            list.add(tr);
+         }
+      }
+   }
+   
+   public ArrayList<StaevneResultat> getStaevneResultater(){
+      return SRList;
    }
    
 }

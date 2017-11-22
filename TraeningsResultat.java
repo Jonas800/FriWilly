@@ -4,8 +4,9 @@ public class TraeningsResultat{
    private LocalDate dato;
    private int medlemID;
    
-   public TraeningsResultat(double tid, String datoString){
+   public TraeningsResultat(int medlemID, double tid, String datoString){
       this.tid = tid;
+      this.medlemID = medlemID;
       LocalDate dato = LocalDate.parse(datoString);
    }
 }
