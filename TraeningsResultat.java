@@ -7,6 +7,6 @@ public class TraeningsResultat{
    public TraeningsResultat(int medlemID, double tid, String datoString){
       this.tid = tid;
       this.medlemID = medlemID;
-      LocalDate dato = LocalDate.parse(datoString);
+      this.dato = LocalDate.parse(datoString);
    }
 }

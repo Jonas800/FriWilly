@@ -6,17 +6,19 @@ import java.io.*;
 public class Medlem{
    
    private int id;
-   private String navn;
+   private String fornavn;
+   private String efternavn;
    private int alder;
    private double kontigent;
    private boolean aktivitetsform;
    private LocalDate fdato;
    
-   public Medlem(int id, String navn, String fdatoString, boolean aktivitetsform) throws Exception{
+   public Medlem(int id, String fornavn, String efternavn, String fdatoString, boolean aktivitetsform) throws Exception{
       this.alder = setAlder(fdatoString);
       this.fdato = LocalDate.parse(fdatoString);
       this.id = id;
-      this.navn = navn;
+      this.fornavn = fornavn;
+      this.efternavn = efternavn;
       this.aktivitetsform = aktivitetsform;
       this.kontigent = getKontigent();
    }
@@ -25,14 +27,14 @@ public class Medlem{
       output.print(toString() + "\r\n");
    }
    public String toString(){
-      return id + navn + alder + kontigent + aktivitetsform + fdato;
+      return id + fornavn + efternavn + alder + kontigent + aktivitetsform + fdato;
    }
 
    public int getID(){
       return id;
    }
-   public String getNavn(){
-      return navn;
+   public String getFornavn(){
+      return fornavn;
    }
    public int setAlder(String fdatoString){
       LocalDate fdato = LocalDate.parse(fdatoString);
@@ -65,8 +67,8 @@ public class Medlem{
    public void setID(int id){
       this.id = id;
    }
-   public void setNavn(String navn){
-      this.navn = navn;
+   public void setFornavn(String navn){
+      this.fornavn = fornavn;
    }
    public void setKontigent(double kontigent){
       this.kontigent = kontigent;
