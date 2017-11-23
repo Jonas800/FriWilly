@@ -5,8 +5,8 @@ public class KonkurrenceSvoemmer extends Medlem{
    private ArrayList<StaevneResultat> SRList;
    private String traener;
   
-   public KonkurrenceSvoemmer(int id, String fornavn, String efternavn, String fdatoString, boolean aktivitetsform, String traener) throws Exception{
-      super(id, fornavn, efternavn, fdatoString, aktivitetsform);
+   public KonkurrenceSvoemmer(int id, String fornavn, String efternavn, String title, String fdatoString, boolean aktivitetsform, String traener) throws Exception{
+      super(id, fornavn, efternavn, title, fdatoString, aktivitetsform);
       this.traener = traener;
       this.SRList = new ArrayList<StaevneResultat>();
       this.TRList = new ArrayList<TraeningsResultat>();

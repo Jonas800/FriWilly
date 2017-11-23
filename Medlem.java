@@ -8,23 +8,21 @@ public class Medlem{
    private int id;
    private String fornavn;
    private String efternavn;
+   private String titel;
    private int alder;
    private double kontigent;
    private boolean aktivitetsform;
    private LocalDate fdato;
    
-   public Medlem(int id, String fornavn, String efternavn, String fdatoString, boolean aktivitetsform) throws Exception{
+   public Medlem(int id, String fornavn, String efternavn, String titel, String fdatoString, boolean aktivitetsform) throws Exception{
       this.alder = setAlder(fdatoString);
       this.fdato = LocalDate.parse(fdatoString);
       this.id = id;
       this.fornavn = fornavn;
       this.efternavn = efternavn;
+      this.titel = titel;
       this.aktivitetsform = aktivitetsform;
-      this.kontigent = getKontigent();
-   }
-   public void saveToFile(String filename)throws Exception{
-      PrintStream output = new PrintStream(new File(filename));
-      output.print(toString() + "\r\n");
+      setKontigent();
    }
    public String toString(){
       return id + fornavn + efternavn + alder + kontigent + aktivitetsform + fdato;
@@ -42,13 +40,16 @@ public class Medlem{
    public LocalDate getFdato(){
       return fdato;
    }
+   public String getTitel(){
+      return titel;
+   }
    public int setAlder(String fdatoString){
       LocalDate fdato = LocalDate.parse(fdatoString);
       int alder = (int) ChronoUnit.YEARS.between(fdato, LocalDate.now());
       return alder;
    }
    
-   public double getKontigent() throws Exception{
+   public void setKontigent() throws Exception{
       double kontigent = 0;
       if(aktivitetsform == true){
          if (alder < 18){
@@ -64,7 +65,7 @@ public class Medlem{
       else{
          kontigent = 500;
       }
-      return kontigent;
+      this.kontigent = kontigent;
    }
    
    public boolean getAktivitetsform(){
