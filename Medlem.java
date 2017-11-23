@@ -36,6 +36,12 @@ public class Medlem{
    public String getFornavn(){
       return fornavn;
    }
+   public String getEfternavn(){
+      return efternavn;
+   }
+   public LocalDate getFdato(){
+      return fdato;
+   }
    public int setAlder(String fdatoString){
       LocalDate fdato = LocalDate.parse(fdatoString);
       int alder = (int) ChronoUnit.YEARS.between(fdato, LocalDate.now());
@@ -44,7 +50,7 @@ public class Medlem{
    
    public double getKontigent() throws Exception{
       double kontigent = 0;
-      if(aktivitetsform = true){
+      if(aktivitetsform == true){
          if (alder < 18){
             kontigent = 1000;
          }
