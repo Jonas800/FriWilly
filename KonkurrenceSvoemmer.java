@@ -3,11 +3,9 @@ import java.io.*;
 public class KonkurrenceSvoemmer extends Medlem{
    private ArrayList<TraeningsResultat> TRList;
    private ArrayList<StaevneResultat> SRList;
-   private String traener;
   
    public KonkurrenceSvoemmer(int id, String fornavn, String efternavn, String title, String fdatoString, boolean aktivitetsform, String traener) throws Exception{
-      super(id, fornavn, efternavn, title, fdatoString, aktivitetsform);
-      this.traener = traener;
+      super(id, fornavn, efternavn, title, fdatoString, aktivitetsform, traener);
       this.SRList = new ArrayList<StaevneResultat>();
       this.TRList = new ArrayList<TraeningsResultat>();
       udfyldSRList(SRList);
@@ -46,8 +44,5 @@ public class KonkurrenceSvoemmer extends Medlem{
    }
    public ArrayList<TraeningsResultat> getTraeningsResultater(){
       return TRList;
-   }
-   public String getTraener(){
-      return traener;
    }
 }
