@@ -3,17 +3,15 @@ import java.time.LocalDate;
 import java.io.*;
 public class delTest {
    public static void main(String[] args) throws Exception{
-      KonkurrenceSvoemmer svoemmer1 = new KonkurrenceSvoemmer(1, "Umaruuu", "Kondo", "KS", "1990-09-09", true, "Taihei");
       
-      ArrayList<StaevneResultat> srList = svoemmer1.getStaevneResultater();
-      System.out.println(svoemmer1);
-      for(StaevneResultat sr : srList){
-         System.out.println(sr);
-      }
+
       ArrayList<Medlem> mList = new ArrayList<Medlem>();
       udfyldMedlemmer(mList);
       while(true){
-      seMedlemmer(mList);
+      visMedlemmer(mList);
+      
+      visKonkurrenceSvoemmere(mList);
+      
       registrerMedlemmer(mList);
       }
 // 
@@ -37,10 +35,10 @@ public class delTest {
       int aktivitetsformValg = console.nextInt();
       boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsform = 1? hvis ja, return true, else return false
       System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesvømmer");
-      int medlemType = console.nextInt();
+      boolean erMotionist = console.nextInt() == 1 ? true : false;
       
-      if(medlemType == 1){
-         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, "N/A");
+      if(erMotionist){
+         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, null, erMotionist);
          mList.add(medlem);
          
          gemMedlem(mList);
@@ -48,7 +46,7 @@ public class delTest {
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         Medlem m = new Medlem(1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn);
+         Medlem m = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn, erMotionist);
          mList.add(m);
          
          gemMedlem(mList);
@@ -66,14 +64,14 @@ public class delTest {
    public static void gemMedlem(ArrayList<Medlem> list) throws Exception{
       String s = "";
       for(Medlem m : list){
-            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.getTraener() + "\r\n";
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.getTraener() + " " + m.erMotionist() + "\r\n";
       }
       PrintStream output = new PrintStream(new File("medlemmer.txt"));
       output.print(s);
       output.close();
    }
    
-   public static void seMedlemmer(ArrayList<Medlem> mList){
+   public static void visMedlemmer(ArrayList<Medlem> mList){
       for(Medlem m : mList){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt";
          System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + m.getFdato() + " " + af + " " + m.getTraener());
@@ -98,26 +96,42 @@ public class delTest {
          String fdato = data.next();
          boolean aktivitetsform = data.nextBoolean();
          String traener = data.next();
-         Medlem medlem = new Medlem(id, fornavn, efternavn, titel, fdato, aktivitetsform, traener);
+         boolean erMotionist = data.nextBoolean();
+         Medlem medlem = new Medlem(id, fornavn, efternavn, titel, fdato, aktivitetsform, traener, erMotionist);
          list.add(medlem);
       }
    }
-//    public static ArrayList<KonkurrenceSvoemmer> udfyldKonkurrenceSvoemmere() throws Exception{
-//       Scanner scanner = new Scanner(new File("konkurrencesvoemmer.txt"));
-//       ArrayList<KonkurrenceSvoemmer> list = new ArrayList<KonkurrenceSvoemmer>();
-// 
-//       while(scanner.hasNextLine() && scanner.hasNextInt()){
-//          int id = scanner.nextInt();
-//          String fornavn = scanner.next();
-//          String efternavn = scanner.next();
-//          String titel = scanner.next();
-//          String fdato = scanner.next();
-//          boolean aktivitetsform = scanner.nextBoolean();
-//          String traener = scanner.next();
-//          
-//          KonkurrenceSvoemmer ks = new KonkurrenceSvoemmer(id, fornavn, efternavn, titel, fdato, aktivitetsform, traener);
-//          list.add(ks);
-//       }
-//       return list;
-//    }
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
+      System.out.println("KS'ers");
+      ArrayList<StaevneResultat> srALL = new ArrayList<StaevneResultat>();
+
+      for(Medlem m : mList){
+         if(!m.erMotionist()){
+            KonkurrenceSvoemmer ks = new KonkurrenceSvoemmer(m);
+            ArrayList<StaevneResultat> srList = ks.getStaevneResultater();
+            if(srList.size() > 0){
+               System.out.println(ks);
+               Collections.sort(srList, StaevneResultat.TidComparator);
+               
+               for(StaevneResultat sr : srList){
+                  System.out.println(sr);
+                  
+               }
+               //get bedste tid per svoemmer
+               for(int i = 0; i < 1; i++){
+                  srALL.add(srList.get(0));
+               }
+               
+            }
+         }
+      }
+      //mangler endnu en sort, men for doven. TODO. anime først!
+      for(StaevneResultat sr : srALL){
+         System.out.println(sr);
+      }
+   }
+   public static void visStaevneResultaterForEnSvoemmer(){
+      
+   }
+   
 }
