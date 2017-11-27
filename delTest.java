@@ -103,7 +103,7 @@ public class delTest {
    }
    public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
       System.out.println("KS'ers");
-      ArrayList<StaevneResultat> srALL = new ArrayList<StaevneResultat>();
+      ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
 
       for(Medlem m : mList){
          if(!m.erMotionist()){
@@ -118,16 +118,17 @@ public class delTest {
                   
                }
                //get bedste tid per svoemmer
-               for(int i = 0; i < 1; i++){
-                  srALL.add(srList.get(0));
-               }
+               
+               resultatList.add(srList.get(0));
+               
                
             }
          }
       }
-      //mangler endnu en sort, men for doven. TODO. anime først!
-      for(StaevneResultat sr : srALL){
-         System.out.println(sr);
+      //mangler endnu en sort, men for doven. TODO. anime først! også filtrering af discipliner
+      System.out.println("top5");
+      for(Resultat r : resultatList){
+         System.out.println(r);
       }
    }
    public static void visStaevneResultaterForEnSvoemmer(){

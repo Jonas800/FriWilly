@@ -1,24 +1,15 @@
 import java.time.LocalDate;
 import java.util.*;
-public class StaevneResultat{
-   private int medlemID;
-   private String disciplin;
-   private double tid;
-   private LocalDate dato;
+public class StaevneResultat extends Resultat{
    private String staevne; 
    
    public StaevneResultat(int medlemID, String disciplin, double tid, String datoString, String staevne) {
-      this.dato = LocalDate.parse(datoString);
-      this.medlemID = medlemID;
-      this.disciplin = disciplin;
-      this.tid = tid;
+      super(medlemID, tid, datoString, disciplin);
       this.staevne = staevne;
    }
-   public double getTid(){
-      return tid;
-   }
+ 
    public String toString(){
-      return medlemID + " " + disciplin + " " + tid + " " + staevne + " " + dato;
+      return super.getMedlemID() + " " + super.getDisciplin() + " " + super.getTid() + " " + staevne + " " + super.getDato();
    }
    //https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
    //Comparator til at sortere i tiden i en Collections.sort() metode. Tiden bliver sorteret faldende.
