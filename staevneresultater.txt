@@ -1,8 +1,8 @@
 2 Brystsvomning 10,30 2017-11-20 SuperSwim
 2 Hundesvomning 5,30 2017-11-20 SuperSwim
-2 Rycrawl 8,30 2017-11-20 SuperSwim
+2 Rygcrawl 9,30 2017-11-20 SuperSwim
 2 Brystsvomning 4,60 2017-11-20 SuperSwim
-3 Brystsvomning 10,30 2017-11-20 SuperSwim
-3 Hundesvomning 5,30 2017-11-20 SuperSwim
-3 Rycrawl 8,30 2017-11-20 SuperSwim
-3 Brystsvomning 4,60 2017-11-20 SuperSwim
+3 Brystsvomning 10,90 2017-11-20 SuperSwim
+3 Hundesvomning 5,50 2017-11-20 SuperSwim
+3 Rygcrawl 6,30 2017-11-20 SuperSwim
+3 Brystsvomning 4,70 2017-11-20 SuperSwim
