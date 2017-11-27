@@ -84,8 +84,11 @@ public class Medlem{
    public void setID(int id){
       this.id = id;
    }
-   public void setFornavn(String navn){
+   public void setFornavn(String fornavn){
       this.fornavn = fornavn;
+   }
+   public void setEfternavn(String efternavn){
+      this.efternavn = efternavn;
    }
    public void setKontigent(double kontigent){
       this.kontigent = kontigent;

@@ -33,7 +33,7 @@ public class KonkurrenceSvoemmer extends Medlem{
    }
    private void udfyldTRList(ArrayList<TraeningsResultat> list) throws FileNotFoundException{
       Scanner scanner = new Scanner(new File("traeningsresultater.txt"));
-      while(scanner.hasNextLine()){
+         while(scanner.hasNextLine()){
          String line = scanner.nextLine();
          Scanner data = new Scanner(line);
          int medlemID = data.nextInt();
