@@ -11,14 +11,5 @@ public class StaevneResultat extends Resultat{
    public String toString(){
       return super.getMedlemID() + " " + super.getDisciplin() + " " + super.getTid() + " " + staevne + " " + super.getDato();
    }
-   //https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
-   //Comparator til at sortere i tiden i en Collections.sort() metode. Tiden bliver sorteret faldende.
-   public static Comparator<StaevneResultat> TidComparator = new Comparator<StaevneResultat>(){
-      public int compare(StaevneResultat st1, StaevneResultat st2){
-         Double double1 = st1.getTid();
-         Double double2 = st2.getTid();
-         
-         return double2.compareTo(double1);
-      }
-   };
+
 }

@@ -1,9 +1,37 @@
 import java.time.LocalDate;
+import java.util.*;
 public class Resultat{
    private double tid;
    private LocalDate dato;
    private int medlemID;
    private String disciplin;
+   
+   //https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
+   //Comparator (som er et field(med en metode til opbyggelse indeni))
+   //Bruges til at sortere i tiden i en Collections.sort() metode. Tiden bliver sorteret faldende.
+   public static Comparator<Resultat> TidComparator = new Comparator<Resultat>(){
+      public int compare(Resultat r1, Resultat r2){
+         //nullværdi håndtering - vi antager at null er lig med uendeligt langsom svoemning
+         //0 = de to værdier er ens
+         if(r1 == null && r2 == null){
+            return 0;
+         }
+         //-1 = r2 er lavere end r1
+         else if(r1 == null){
+            return 1;
+         }
+         //1 = r1 er lavere end r2
+         else if(r2 == null){
+            return -1;
+         }
+         else{
+            Double double1 = r1.getTid();
+            Double double2 = r2.getTid();
+            return double1.compareTo(double2);
+         }
+      }
+   };
+   
    
    public Resultat(int medlemID, double tid, String datoString, String disciplin){
       this.tid = tid;
@@ -23,4 +51,8 @@ public class Resultat{
    public String getDisciplin(){
       return disciplin;
    }
+   public void setTid(double tid){
+      this.tid = tid;
+   }
+   
 }

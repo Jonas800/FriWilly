@@ -116,6 +116,7 @@ public class delTest {
                for(StaevneResultat sr : srList){
                   System.out.println(sr);
                   
+                  resultatList.add(sr);
                }
                //get bedste tid per svoemmer
                
@@ -127,9 +128,46 @@ public class delTest {
       }
       //mangler endnu en sort, men for doven. TODO. anime først! også filtrering af discipliner
       System.out.println("top5");
+
+      
+      Resultat[] top5brystSvomning = new Resultat[5];
+      Resultat[] top5hundeSvomning = new Resultat[5];
+      Resultat[] top5rygcrawl = new Resultat[5];
+      Resultat[] top5crawl = new Resultat[5];
+      Resultat[] top5butterfly = new Resultat[5];
+      
+      int bs = 0;
+      int rc = 0;
+      int bf = 0;
+      int c = 0;
+      int hs = 0;
       for(Resultat r : resultatList){
-         System.out.println(r);
+         if(r.getDisciplin().equals("Brystsvomning") && bs < 5){
+            top5brystSvomning[bs] = r;
+            bs++;
+         }
+         
+         if(r.getDisciplin().equals("Rygcrawl") && rc < 5){
+            top5rygcrawl[rc] = r;
+            rc++;
+         }
+         if(r.getDisciplin().equals("Butterfly") && bf < 5){
+            top5butterfly[bf] = r;
+            bf++;
+         }
+         if(r.getDisciplin().equals("Crawl") && c < 5){
+            top5crawl[c] = r;
+            c++;
+         }
+         if(r.getDisciplin().equals("Hundesvomning") && hs < 5){
+            top5hundeSvomning[hs] = r;
+            hs++;
+         }
       }
+      Arrays.sort(top5hundeSvomning, Resultat.TidComparator);
+      Arrays.sort(top5rygcrawl, Resultat.TidComparator);
+
+      System.out.println(Arrays.toString(top5hundeSvomning) + Arrays.toString(top5rygcrawl));
    }
    public static void visStaevneResultaterForEnSvoemmer(){
       
