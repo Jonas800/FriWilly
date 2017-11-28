@@ -55,4 +55,12 @@ public class Resultat{
       this.tid = tid;
    }
    
+   public static int containsIDreturnIndex(ArrayList<Resultat> list, int id){
+      for(Resultat r : list){
+         if(r.getMedlemID() == id){
+            return list.indexOf(r);
+         }
+      }
+      return -1;
+   } 
 }

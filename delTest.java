@@ -111,22 +111,33 @@ public class delTest {
             ArrayList<StaevneResultat> srList = ks.getStaevneResultater();
             if(srList.size() > 0){
                System.out.println(ks);
-               Collections.sort(srList, StaevneResultat.TidComparator);
+               Collections.sort(srList, Resultat.TidComparator);
                
                for(StaevneResultat sr : srList){
                   System.out.println(sr);
-                  
-                  resultatList.add(sr);
                }
                //get bedste tid per svoemmer
                
                resultatList.add(srList.get(0));
+            }
+            ArrayList<TraeningsResultat> trList = ks.getTraeningsResultater();
+            if(trList.size() > 0){
+               Collections.sort(trList, Resultat.TidComparator);
                
-               
+               int index = Resultat.containsIDreturnIndex(resultatList, trList.get(0).getMedlemID());
+               if(index >= 0){
+                  //tjek for objecternes tid, fjern højeste
+                  if(trList.get(0).getTid() < resultatList.get(index).getTid()){
+                     resultatList.remove(index);
+                     resultatList.add(trList.get(0));
+                  }
+               }
             }
          }
       }
       //mangler endnu en sort, men for doven. TODO. anime først! også filtrering af discipliner
+      Collections.sort(resultatList, Resultat.TidComparator);
+      
       System.out.println("top5");
 
       
@@ -146,7 +157,6 @@ public class delTest {
             top5brystSvomning[bs] = r;
             bs++;
          }
-         
          if(r.getDisciplin().equals("Rygcrawl") && rc < 5){
             top5rygcrawl[rc] = r;
             rc++;
@@ -166,8 +176,20 @@ public class delTest {
       }
       Arrays.sort(top5hundeSvomning, Resultat.TidComparator);
       Arrays.sort(top5rygcrawl, Resultat.TidComparator);
+      Arrays.sort(top5butterfly, Resultat.TidComparator);
+      Arrays.sort(top5crawl, Resultat.TidComparator);
+      Arrays.sort(top5brystSvomning, Resultat.TidComparator);
 
-      System.out.println(Arrays.toString(top5hundeSvomning) + Arrays.toString(top5rygcrawl));
+      for(Resultat r : top5hundeSvomning){
+         if(r != null){
+            System.out.println(r);
+         }
+      }
+      for(Resultat r : top5brystSvomning){
+         if(r != null){
+            System.out.println(r);
+         }
+      }
    }
    public static void visStaevneResultaterForEnSvoemmer(){
       
