@@ -3,3 +3,4 @@
 3 Muddi Muddi Slave  1997-10-10 true N/A false
 4 Michael Jesnen derp  1995-09-09 false N/A false
 5 Per Jensen Supermand  2000-10-10 false N/A true
+6 Hallo Hallo Hallo  1990-10-10 false raslle false

@@ -4,15 +4,22 @@ import java.io.*;
 public class delTest {
    public static void main(String[] args) throws Exception{
       
-
+      ArrayList<Resultat> alleResultater = new ArrayList<Resultat>();
+      udfyldResultater(alleResultater);
       ArrayList<Medlem> mList = new ArrayList<Medlem>();
-      udfyldMedlemmer(mList);
+      udfyldMedlemmer(mList, alleResultater);
+
+      
+      // for(Resultat r : alleResultater){
+//       if(r instanceof StaevneResultat){
+//          System.out.println(((StaevneResultat) r).getStaevne());
+//       }}
       while(true){
       visMedlemmer(mList);
       
       visKonkurrenceSvoemmere(mList);
       
-      registrerMedlemmer(mList);
+      registrerMedlemmer(mList, alleResultater);
       }
 // 
 //       LocalDate d = LocalDate.parse("1990-09-09");
@@ -20,7 +27,26 @@ public class delTest {
 //       System.out.println(alder);
 //       System.out.println(LocalDate.now());
    }
-   public static void registrerMedlemmer(ArrayList<Medlem> mList) throws Exception{
+   public static void udfyldResultater(ArrayList<Resultat> list) throws Exception{
+      Scanner scanner = new Scanner(new File("staevneresultater.txt"));
+      while(scanner.hasNextLine()){
+         String line = scanner.nextLine();
+         Scanner data = new Scanner(line).useLocale(Locale.GERMANY);
+         int medlemID = data.nextInt();
+         StaevneResultat sr = new StaevneResultat(list.size() + 1, medlemID, data.next(), data.nextDouble(), data.next(), data.next());
+         list.add(sr);
+      }
+      scanner = new Scanner(new File("traeningsresultater.txt"));
+      while(scanner.hasNextLine()){
+         String line = scanner.nextLine();
+         Scanner data = new Scanner(line).useLocale(Locale.GERMANY);
+         int medlemID = data.nextInt();
+         TraeningsResultat tr = new TraeningsResultat(list.size() + 1, medlemID, data.next(), data.nextDouble(), data.next());
+         list.add(tr);
+      }
+   }
+   
+   public static void registrerMedlemmer(ArrayList<Medlem> mList, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner console = new Scanner(System.in);
       
       System.out.println("Indtast fornavn");
@@ -38,33 +64,29 @@ public class delTest {
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       if(erMotionist){
-         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, null, erMotionist);
+         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
          mList.add(medlem);
          
-         gemMedlem(mList);
       }
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         Medlem m = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn, erMotionist);
+         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
          mList.add(m);
-         
-         gemMedlem(mList);
       }
+      gemMedlem(mList);
+
    }
-   public static void gemKonkurrenceSvoemmere(ArrayList<KonkurrenceSvoemmer> list) throws Exception{
-      String s = "";
-      for(KonkurrenceSvoemmer ks : list){
-            s += ks.getID() + " " + ks.getFornavn() + " " + ks.getEfternavn() + " " + ks.getTitel() + " " + ks.getFdato() + " " + ks.getAktivitetsform() + " " + ks.getTraener() + "\r\n";
-      }
-      PrintStream output = new PrintStream(new File("konkurrencesvoemmer.txt"));
-      output.print(s);
-      output.close();
-   }
+
    public static void gemMedlem(ArrayList<Medlem> list) throws Exception{
       String s = "";
       for(Medlem m : list){
-            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.getTraener() + " " + m.erMotionist() + "\r\n";
+         if(m instanceof KonkurrenceSvoemmer){
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist() + "\r\n";
+         }
+         else{
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + "\r\n";
+         }
       }
       PrintStream output = new PrintStream(new File("medlemmer.txt"));
       output.print(s);
@@ -72,9 +94,15 @@ public class delTest {
    }
    
    public static void visMedlemmer(ArrayList<Medlem> mList){
+      System.out.println("ALLE MEDLEMMER");
       for(Medlem m : mList){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt";
-         System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + m.getFdato() + " " + af + " " + m.getTraener());
+         if(m instanceof KonkurrenceSvoemmer){
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
+         }
+         else{
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist());
+         }
       }
 //       for(KonkurrenceSvoemmer ks: ksList){
 //          String af = ks.getAktivitetsform() == true ? "Aktivt" : "Passivt";
@@ -82,7 +110,7 @@ public class delTest {
 //       }
    }
    
-   public static void udfyldMedlemmer(ArrayList<Medlem> list) throws Exception{
+   public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner scanner = new Scanner(new File("medlemmer.txt"));
 
       while(scanner.hasNextLine()){
@@ -97,20 +125,25 @@ public class delTest {
          boolean aktivitetsform = data.nextBoolean();
          String traener = data.next();
          boolean erMotionist = data.nextBoolean();
-         Medlem medlem = new Medlem(id, fornavn, efternavn, titel, fdato, aktivitetsform, traener, erMotionist);
-         list.add(medlem);
+         
+         if(erMotionist){
+            list.add(new Medlem(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist));
+         }
+         else
+         {
+            list.add(new KonkurrenceSvoemmer(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traener, alleResultater));
+         }
       }
    }
    public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
-      System.out.println("KS'ers");
+      System.out.println("KS'ers + resultater");
       ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
 
       for(Medlem m : mList){
-         if(!m.erMotionist()){
-            KonkurrenceSvoemmer ks = new KonkurrenceSvoemmer(m);
-            ArrayList<StaevneResultat> srList = ks.getStaevneResultater();
+         if(m instanceof KonkurrenceSvoemmer){
+            ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer) m).getStaevneResultater();
             if(srList.size() > 0){
-               System.out.println(ks);
+               System.out.println(m);
                Collections.sort(srList, Resultat.TidComparator);
                
                for(StaevneResultat sr : srList){
@@ -120,7 +153,7 @@ public class delTest {
                
                resultatList.add(srList.get(0));
             }
-            ArrayList<TraeningsResultat> trList = ks.getTraeningsResultater();
+            ArrayList<TraeningsResultat> trList = ((KonkurrenceSvoemmer) m).getTraeningsResultater();
             if(trList.size() > 0){
                Collections.sort(trList, Resultat.TidComparator);
                

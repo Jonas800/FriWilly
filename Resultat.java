@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.*;
 public class Resultat{
+   private int id;
    private double tid;
    private LocalDate dato;
    private int medlemID;
@@ -16,11 +17,11 @@ public class Resultat{
          if(r1 == null && r2 == null){
             return 0;
          }
-         //-1 = r2 er lavere end r1
+         //1 = r1 er null, derfor højere end r2
          else if(r1 == null){
             return 1;
          }
-         //1 = r1 er lavere end r2
+         //-1 = r2 er null, derfor højere end r1
          else if(r2 == null){
             return -1;
          }
@@ -33,11 +34,15 @@ public class Resultat{
    };
    
    
-   public Resultat(int medlemID, double tid, String datoString, String disciplin){
+   public Resultat(int id, int medlemID, double tid, String datoString, String disciplin){
+      this.id = id;
       this.tid = tid;
       this.medlemID = medlemID;
       this.dato = LocalDate.parse(datoString);
       this.disciplin = disciplin;
+   }
+   public int getID(){
+      return id;
    }
    public double getTid(){
       return tid;
