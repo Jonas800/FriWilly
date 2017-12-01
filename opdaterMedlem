@@ -1,0 +1,102 @@
+Metode til at tjekke om user-input er int:
+
+  public static String tjek(Scanner input){                   
+        String number =null;                                      
+        while (!input.hasNextInt()) {  
+           number = input.next();                            
+           System.out.println("Ugyldigt indput, venligst indsats et nummer!");  
+        }
+        return number;                                              
+     }
+     
+Den burde at virke nu, jeg bruger en gammel version af deltest fordi jgrasp ikke gider at åbne de andre versioner i har lagt op. 
+I må lige tjekke den på jeres main eller må i lige skrive til mig:
+   
+     public static void opdaterMedlemmer(ArrayList<Medlem> alleMedlemmer) throws Exception{
+        Scanner scanner = new Scanner(new File("medlemmer.txt"));
+        Scanner console = new Scanner(System.in);
+        while(scanner.hasNextLine()){
+           System.out.println("Vælg et id for at ændre et medlem: ");
+           tjek(console);
+           int id = console.nextInt();
+           boolean quit = false;
+           do{
+              System.out.println("Hvad kunne du godt tænke dig at ændre i? ");
+              System.out.println("1. Fornavn");
+              System.out.println("2. Efternavn");
+              System.out.println("3. Titel");
+              System.out.println("4. Fødselsdato");
+              System.out.println("5. Aktiv eller passiv ");
+              System.out.println("6. Aktivitetsform");
+              System.out.println("0. log ud");
+              System.out.print("Vælg venligst et menupunkt: ");
+              tjek(console);
+              int valg = console.nextInt();
+              switch(valg){
+                 case 1:  
+                    System.out.println("Indtast fornavn");
+                    String fornavn = console.next();
+                    for (Medlem m : alleMedlemmer) {
+                       if (m.getID() == valg) {
+                          gemMedlem(alleMedlemmer);
+                       }
+                    }
+                    break;
+                 case 2:
+                    System.out.println("Indtast efternavn");
+                    String efternavn = console.next();
+                    for (Medlem m : alleMedlemmer) {
+                       if (m.getID() == valg) {
+                          gemMedlem(alleMedlemmer);
+                       }
+                    }
+                    break;
+                 case 3:
+                    System.out.println("Indtast title");
+                    String titel = console.next();
+                    for (Medlem m : alleMedlemmer) {
+                       if (m.getID() == valg) {
+                          gemMedlem(alleMedlemmer);
+                       }                     
+                    }
+                    break;
+                 case 4:
+                    System.out.println("Indtast fødselsdato (yyyy-MM-dd)");
+                    String fdato = console.next();
+                    for (Medlem m : alleMedlemmer) {
+                       if (m.getID() == valg) {
+                          gemMedlem(alleMedlemmer);           
+                       }
+                    }
+                    break;
+                 case 5:
+                    System.out.println("Vælg om medlemmet er 1: aktivt eller 2: passivt");
+                    int aktivitetsformValg = console.nextInt();
+                    boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsform = 1? hvis ja, return true, else return false
+                    for (Medlem m : alleMedlemmer) {
+                       if (m.getID() == valg) {
+                          gemMedlem(alleMedlemmer);
+                       }
+                    }
+                    break;
+                 case 6:
+                    System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesv¯mmer");
+                    boolean erMotionist = console.nextInt() == 1 ? true : false;
+                    if(erMotionist){ 
+                       gemMedlem(alleMedlemmer);
+                    } else {
+                       System.out.println("Indtast trÊnernavn");
+                       String traenerNavn = console.next();
+                       gemMedlem(alleMedlemmer);
+                    }
+
+                    break;
+                 case 0:
+                    quit = true;
+                    break;
+                 default:
+              }
+           }while (!quit);              
+           System.out.println("Tak og vær venlig at komme igen!\n");
+        }
+     }
