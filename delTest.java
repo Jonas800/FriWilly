@@ -6,8 +6,8 @@ public class delTest {
       
       ArrayList<Resultat> alleResultater = new ArrayList<Resultat>();
       udfyldResultater(alleResultater);
-      ArrayList<Medlem> mList = new ArrayList<Medlem>();
-      udfyldMedlemmer(mList, alleResultater);
+      ArrayList<Medlem> alleMedlemmer = new ArrayList<Medlem>();
+      udfyldMedlemmer(alleMedlemmer, alleResultater);
 
       
       // for(Resultat r : alleResultater){
@@ -15,11 +15,11 @@ public class delTest {
 //          System.out.println(((StaevneResultat) r).getStaevne());
 //       }}
       while(true){
-      visMedlemmer(mList);
+      visMedlemmer(alleMedlemmer);
       
-      visKonkurrenceSvoemmere(mList);
+      visKonkurrenceSvoemmere(alleMedlemmer);
       
-      registrerMedlemmer(mList, alleResultater);
+      registrerMedlemmer(alleMedlemmer, alleResultater);
       }
 // 
 //       LocalDate d = LocalDate.parse("1990-09-09");
@@ -46,7 +46,7 @@ public class delTest {
       }
    }
    
-   public static void registrerMedlemmer(ArrayList<Medlem> mList, ArrayList<Resultat> alleResultater) throws Exception{
+   public static void registrerMedlemmer(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner console = new Scanner(System.in);
       
       System.out.println("Indtast fornavn");
@@ -64,17 +64,17 @@ public class delTest {
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       if(erMotionist){
-         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
-         mList.add(medlem);
+         Medlem medlem = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
+         alleMedlemmer.add(medlem);
          
       }
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
-         mList.add(m);
+         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
+         alleMedlemmer.add(m);
       }
-      gemMedlem(mList);
+      gemMedlem(alleMedlemmer);
 
    }
 
@@ -93,9 +93,9 @@ public class delTest {
       output.close();
    }
    
-   public static void visMedlemmer(ArrayList<Medlem> mList){
+   public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
       System.out.println("ALLE MEDLEMMER");
-      for(Medlem m : mList){
+      for(Medlem m : alleMedlemmer){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
          if(m instanceof KonkurrenceSvoemmer){
             System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
@@ -135,7 +135,7 @@ public class delTest {
          }
       }
    }
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer) throws Exception{
       System.out.println("KS'ers + resultater");
       ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
       //ArrayLists for bedste resultat for alle medlemmer for hver disciplin
@@ -147,37 +147,112 @@ public class delTest {
       
       
       
-      for(Medlem m : mList){
+      for(Medlem m : alleMedlemmer){
          if(m instanceof KonkurrenceSvoemmer){
             ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer) m).getStaevneResultater();
             if(srList.size() > 0){
                System.out.println(m);
-               //Collections.sort(srList, Resultat.TidComparator);
+               Collections.sort(srList, Resultat.TidComparator);
                
-               //Print bedste resultat for hver disciplin for et medlem
+               //Get bedste staevneresultat for hver disciplin for et medlem
+               int bs = 0, hs = 0, rc = 0, c = 0, bf = 0;
                for(StaevneResultat sr : srList){
-                  System.out.println(sr);
+                  //System.out.println(sr);
                   
-                  if(sr.getDisciplin().equals("Brystsvomning"){
+                  if(sr.getDisciplin().equals("Brystsvomning") && bs < 1){
                      bedsteBrystsvoemning.add(sr);
+                     bs++;
                   }
-                  if(sr.getDisciplin().equals("Hundesvomning"){
+                  if(sr.getDisciplin().equals("Hundesvomning") && hs < 1){
                      bedsteHundesvoemning.add(sr);
+                     hs++;
                   }
-                  if(sr.getDisciplin().equals("bedsteRygcrawl"){
+                  if(sr.getDisciplin().equals("Rygcrawl") && rc < 1){
                      bedsteRygcrawl.add(sr);
+                     rc++;
+                  }
+                  if(sr.getDisciplin().equals("Crawl") && c < 1){
+                     bedsteCrawl.add(sr);
+                     c++;
+                  }
+                  if(sr.getDisciplin().equals("Buttefly") && bf < 1){
+                     bedsteButterfly.add(sr);
+                     bf++;
                   }
                }
-               //get bedste tid per svoemmer
                
-               resultatList.add(srList.get(0));
+               //resultatList.add(srList.get(0));
             }
             ArrayList<TraeningsResultat> trList = ((KonkurrenceSvoemmer) m).getTraeningsResultater();
             if(trList.size() > 0){
-               Collections.sort(trList, Resultat.TidComparator);
                
+               //Hvis vi sorterer listen behøver vi kun køre if-sætningerne forneden igennem én gang for at finde bedste tid
+               Collections.sort(trList, Resultat.TidComparator);
+               int bs = 0, hs = 0, rc = 0, c = 0, bf = 0;
+
+               //Get bedste staevneresultat for hver disciplin for et medlem
+               for(TraeningsResultat tr : trList){
+                  //System.out.println(sr);
+                  
+                  if(tr.getDisciplin().equals("Brystsvomning") && bs < 1){
+                     int index = Resultat.containsIDreturnIndex(bedsteBrystsvoemning, m.getID());
+                     if(index >= 0){
+                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
+                        if(tr.getTid() < bedsteBrystsvoemning.get(index).getTid()){
+                           bedsteBrystsvoemning.remove(index);
+                           bedsteBrystsvoemning.add(tr);
+                           bs++;
+                        }
+                     }
+                  }
+                  if(tr.getDisciplin().equals("Hundesvomning") && hs < 1){
+                     int index = Resultat.containsIDreturnIndex(bedsteHundesvoemning, m.getID());
+                     if(index >= 0){
+                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
+                        if(tr.getTid() < bedsteHundesvoemning.get(index).getTid()){
+                           bedsteHundesvoemning.remove(index);
+                           bedsteHundesvoemning.add(tr);
+                           hs++;
+                        }
+                     }
+                  }
+                  if(tr.getDisciplin().equals("Rygcrawl") && rc < 1){
+                     int index = Resultat.containsIDreturnIndex(bedsteRygcrawl, m.getID());
+                     if(index >= 0){
+                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
+                        if(tr.getTid() < bedsteRygcrawl.get(index).getTid()){
+                           bedsteRygcrawl.remove(index);
+                           bedsteRygcrawl.add(tr);
+                           bs++;
+                        }
+                     }
+
+                  }
+                  if(tr.getDisciplin().equals("Crawl") && c < 1){
+                     int index = Resultat.containsIDreturnIndex(bedsteCrawl, m.getID());
+                     if(index >= 0){
+                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
+                        if(tr.getTid() < bedsteCrawl.get(index).getTid()){
+                           bedsteCrawl.remove(index);
+                           bedsteCrawl.add(tr);
+                           c++;
+                        }
+                     }
+                  }
+                  if(tr.getDisciplin().equals("Buttefly") && bf < 1){
+                     int index = Resultat.containsIDreturnIndex(bedsteButterfly, m.getID());
+                     if(index >= 0){
+                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
+                        if(tr.getTid() < bedsteButterfly.get(index).getTid()){
+                           bedsteButterfly.remove(index);
+                           bedsteButterfly.add(tr);
+                           bf++;
+                        }
+                     }                  }
+               }
+
                //Get index hvor id går igen
-               int index = Resultat.containsIDreturnIndex(resultatList, trList.get(0).getMedlemID());
+               int index = Resultat.containsIDreturnIndex(resultatList, m.getID());
                if(index >= 0){
                   //tjek for objecternes tid, fjern højeste
                   if(trList.get(0).getTid() < resultatList.get(index).getTid()){
@@ -189,65 +264,91 @@ public class delTest {
          }
       }
       //mangler endnu en sort, men for doven. TODO. anime først! også filtrering af discipliner
-      Collections.sort(resultatList, Resultat.TidComparator);
-      
+//       Collections.sort(resultatList, Resultat.TidComparator);
+//       Collections.sort(resultatList, Resultat.TidComparator);
+
       System.out.println("top5");
+      Collections.sort(bedsteBrystsvoemning, Resultat.TidComparator);
+      Collections.sort(bedsteHundesvoemning, Resultat.TidComparator);
+      Collections.sort(bedsteRygcrawl, Resultat.TidComparator);
+      Collections.sort(bedsteCrawl, Resultat.TidComparator);
+      Collections.sort(bedsteButterfly, Resultat.TidComparator);
 
+      System.out.println("BS");
+      for(Resultat r : bedsteBrystsvoemning){
+         System.out.println(r);
+      }
+      System.out.println("HS");
+      for(Resultat r : bedsteHundesvoemning){
+         System.out.println(r);
+      }
+      System.out.println("RC");
+      for(Resultat r : bedsteRygcrawl){
+         System.out.println(r);
+      }
+      System.out.println("C");
+      for(Resultat r : bedsteCrawl){
+         System.out.println(r);
+      }
+      System.out.println("BF");
+      for(Resultat r : bedsteButterfly){
+         System.out.println(r);
+      }
       
-      Resultat[] top5brystSvomning = new Resultat[5];
-      Resultat[] top5hundeSvomning = new Resultat[5];
-      Resultat[] top5rygcrawl = new Resultat[5];
-      Resultat[] top5crawl = new Resultat[5];
-      Resultat[] top5butterfly = new Resultat[5];
-      
-      int bs = 0;
-      int rc = 0;
-      int bf = 0;
-      int c = 0;
-      int hs = 0;
-      for(Resultat r : resultatList){
-         if(r.getDisciplin().equals("Brystsvomning") && bs < 5){
-            top5brystSvomning[bs] = r;
-            bs++;
-         }
-         if(r.getDisciplin().equals("Rygcrawl") && rc < 5){
-            top5rygcrawl[rc] = r;
-            rc++;
-         }
-         if(r.getDisciplin().equals("Butterfly") && bf < 5){
-            top5butterfly[bf] = r;
-            bf++;
-         }
-         if(r.getDisciplin().equals("Crawl") && c < 5){
-            top5crawl[c] = r;
-            c++;
-         }
-         if(r.getDisciplin().equals("Hundesvomning") && hs < 5){
-            top5hundeSvomning[hs] = r;
-            hs++;
-         }
-      }
-      Arrays.sort(top5hundeSvomning, Resultat.TidComparator);
-      Arrays.sort(top5rygcrawl, Resultat.TidComparator);
-      Arrays.sort(top5butterfly, Resultat.TidComparator);
-      Arrays.sort(top5crawl, Resultat.TidComparator);
-      Arrays.sort(top5brystSvomning, Resultat.TidComparator);
-
-      for(Resultat r : top5hundeSvomning){
-         if(r != null){
-            System.out.println(r);
-         }
-      }
-      for(Resultat r : top5brystSvomning){
-         if(r != null){
-            System.out.println(r);
-         }
-      }
-      for(Resultat r : top5rygcrawl){
-         if(r != null){
-            System.out.println(r);
-         }
-      }
+      // Resultat[] top5brystSvomning = new Resultat[5];
+//       Resultat[] top5hundeSvomning = new Resultat[5];
+//       Resultat[] top5rygcrawl = new Resultat[5];
+//       Resultat[] top5crawl = new Resultat[5];
+//       Resultat[] top5butterfly = new Resultat[5];
+//       
+//       int bs = 0;
+//       int rc = 0;
+//       int bf = 0;
+//       int c = 0;
+//       int hs = 0;
+//       for(Resultat r : resultatList){
+//          if(r.getDisciplin().equals("Brystsvomning") && bs < 5){
+//             top5brystSvomning[bs] = r;
+//             bs++;
+//          }
+//          if(r.getDisciplin().equals("Rygcrawl") && rc < 5){
+//             top5rygcrawl[rc] = r;
+//             rc++;
+//          }
+//          if(r.getDisciplin().equals("Butterfly") && bf < 5){
+//             top5butterfly[bf] = r;
+//             bf++;
+//          }
+//          if(r.getDisciplin().equals("Crawl") && c < 5){
+//             top5crawl[c] = r;
+//             c++;
+//          }
+//          if(r.getDisciplin().equals("Hundesvomning") && hs < 5){
+//             top5hundeSvomning[hs] = r;
+//             hs++;
+//          }
+//       }
+//       Arrays.sort(top5hundeSvomning, Resultat.TidComparator);
+//       Arrays.sort(top5rygcrawl, Resultat.TidComparator);
+//       Arrays.sort(top5butterfly, Resultat.TidComparator);
+//       Arrays.sort(top5crawl, Resultat.TidComparator);
+//       Arrays.sort(top5brystSvomning, Resultat.TidComparator);
+// 
+//       for(Resultat r : top5hundeSvomning){
+//          if(r != null){
+//             System.out.println(r);
+//          }
+//       }
+//       for(Resultat r : top5brystSvomning){
+//          if(r != null){
+//             System.out.println(r);
+//          }
+//       }
+//       for(Resultat r : top5rygcrawl){
+//          if(r != null){
+//             System.out.println(r);
+//          }
+//       }
    }
    public static void visStaevneResultaterForEnSvoemmer(){
       

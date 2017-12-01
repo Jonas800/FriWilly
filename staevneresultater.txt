@@ -5,4 +5,4 @@
 3 Brystsvomning 10,90 2017-11-20 SuperSwim
 3 Hundesvomning 5,50 2017-11-20 SuperSwim
 3 Rygcrawl 2,30 2017-11-20 SuperSwim
-3 Brystsvomning 4,70 2017-11-20 SuperSwim
+3 Brystsvomning 2,70 2017-11-20 SuperSwim
