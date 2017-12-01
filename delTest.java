@@ -104,10 +104,6 @@ public class delTest {
             System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist());
          }
       }
-//       for(KonkurrenceSvoemmer ks: ksList){
-//          String af = ks.getAktivitetsform() == true ? "Aktivt" : "Passivt";
-//          System.out.println(ks.getID() + " " + ks.getFornavn() + " " + ks.getEfternavn() + " " + ks.getTitel() + " " + ks.getFdato() + " " + af + " " + ks.getTraener());
-//       }
    }
    
    public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{

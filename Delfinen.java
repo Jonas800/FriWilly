@@ -36,7 +36,7 @@ public class Delfinen{
          int formandValg = console.nextInt();
          switch(formandValg){
             case 1: 
-               registrerMedlemmer(alleMedlemmer); // done
+               //registrerMedlemmer(alleMedlemmer, alleResultater); // done
                break;
             case 2:
                visMedlemmer(alleMedlemmer); // done
@@ -61,7 +61,7 @@ public class Delfinen{
       int traenerValg = console.nextInt();
       switch(traenerValg){
          case 1:
-            visKonkurrenceSvoemmere(alleMedlemmer); //done
+            //visKonkurrenceSvoemmere(alleMedlemmer); //done
             break;
          case 2:
             //seTopFem(alleMedlemmer); //ikke endnu
@@ -128,7 +128,7 @@ public class Delfinen{
       }
    }
 
-   public static void registrerMedlemmer(ArrayList<Medlem> alleMedlemmer) throws Exception{
+   public static void registrerMedlemmer(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner console = new Scanner(System.in);
       
       System.out.println("Indtast fornavn");
@@ -141,61 +141,55 @@ public class Delfinen{
       String fdato = console.next();
       System.out.println("Vælg om medlemmet er 1: aktivt eller 2: passivt");
       int aktivitetsformValg = console.nextInt();
-      boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsform = 1? hvis ja, return true, else return false
+      boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsformValg = 1? hvis ja, return true, else return false
       System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesvømmer");
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       if(erMotionist){
-         Medlem medlem = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, null, erMotionist);
+         Medlem medlem = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
          alleMedlemmer.add(medlem);
          
-         gemMedlem(alleMedlemmer);
       }
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         Medlem m = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn, erMotionist);
+         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
          alleMedlemmer.add(m);
-         
-         gemMedlem(alleMedlemmer);
       }
+      gemMedlem(alleMedlemmer);
+
    }
    public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
+      System.out.println("ALLE MEDLEMMER");
       for(Medlem m : alleMedlemmer){
-         String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //forkortet if/else sætning
-         System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + m.getFdato() + " " + af + " " + m.getTraener());
-      }
-   }
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer) throws Exception{
-      System.out.println("KS'ers");
-      ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
-
-      for(Medlem m : alleMedlemmer){
-         if(!m.erMotionist()){
-            KonkurrenceSvoemmer ks = new KonkurrenceSvoemmer(m);
-            ArrayList<StaevneResultat> srList = ks.getStaevneResultater();
-            if(srList.size() > 0){
-               System.out.println(ks);
-               Collections.sort(srList, StaevneResultat.TidComparator);
-               
-               for(StaevneResultat sr : srList){
-                  System.out.println(sr);
-                  
-               }
-               //get bedste tid per svoemmer
-               
-               resultatList.add(srList.get(0));
-               
-               
-            }
+         String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
+         if(m instanceof KonkurrenceSvoemmer){
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
+         }
+         else{
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist());
          }
       }
+   }
+   public static void gemMedlem(ArrayList<Medlem> list) throws Exception{
+      String s = "";
+      for(Medlem m : list){
+         if(m instanceof KonkurrenceSvoemmer){
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist() + "\r\n";
+         }
+         else{
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + "\r\n";
+         }
+      }
+      PrintStream output = new PrintStream(new File("medlemmer.txt"));
+      output.print(s);
+      output.close();
    }
    public static void visMedlemmerIRestance(ArrayList<Medlem> alleMedlemmer){
    //      System.out.printf("%-4s %-20s %-20s %-10s\n", 
 
       for(Medlem m: alleMedlemmer){
-         if(m.getHarBetalt == false){
+         if(m.getHarBetalt() == false){
             System.out.printf("%-4s %-20s %-20s %-10s\n", m.getID(), m.getAddresse(), m.get.TelefonNummer(), get.navn()); 
          }
       }
