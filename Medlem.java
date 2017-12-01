@@ -46,6 +46,9 @@ public class Medlem{
    public String getTitel(){
       return titel;
    }
+   public double getKontigent(){
+      return kontigent;
+   }
 
    public boolean erMotionist(){
       return erMotionist;
