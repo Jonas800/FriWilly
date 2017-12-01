@@ -13,6 +13,7 @@ public class Medlem{
    private double kontigent;
    private boolean aktivitetsform;
    private boolean erMotionist;
+   private boolean harBetalt;
    private LocalDate fdato;
    
    public Medlem(int id, String fornavn, String efternavn, String titel, String fdatoString, boolean aktivitetsform, boolean erMotionist) throws Exception{
@@ -91,6 +92,12 @@ public class Medlem{
    }
    public void setAktivitetsform(boolean aktivitetsform){
       this.aktivitetsform = aktivitetsform;
+   }
+   public boolean getHarBetalt(){
+      return harBetalt;
+   }
+   public void setHarBetalt(boolean harBetalt){
+      this.harBetalt = harBetalt;
    }
    
 

@@ -59,7 +59,7 @@ public class delTest {
       String fdato = console.next();
       System.out.println("Vælg om medlemmet er 1: aktivt eller 2: passivt");
       int aktivitetsformValg = console.nextInt();
-      boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsform = 1? hvis ja, return true, else return false
+      boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsformValg = 1? hvis ja, return true, else return false
       System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesvømmer");
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
@@ -96,7 +96,7 @@ public class delTest {
    public static void visMedlemmer(ArrayList<Medlem> mList){
       System.out.println("ALLE MEDLEMMER");
       for(Medlem m : mList){
-         String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt";
+         String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
          if(m instanceof KonkurrenceSvoemmer){
             System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
          }
@@ -138,16 +138,35 @@ public class delTest {
    public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
       System.out.println("KS'ers + resultater");
       ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
-
+      //ArrayLists for bedste resultat for alle medlemmer for hver disciplin
+      ArrayList<Resultat> bedsteBrystsvoemning = new ArrayList<Resultat>();
+      ArrayList<Resultat> bedsteHundesvoemning = new ArrayList<Resultat>();
+      ArrayList<Resultat> bedsteRygcrawl = new ArrayList<Resultat>();
+      ArrayList<Resultat> bedsteCrawl = new ArrayList<Resultat>();
+      ArrayList<Resultat> bedsteButterfly = new ArrayList<Resultat>();
+      
+      
+      
       for(Medlem m : mList){
          if(m instanceof KonkurrenceSvoemmer){
             ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer) m).getStaevneResultater();
             if(srList.size() > 0){
                System.out.println(m);
-               Collections.sort(srList, Resultat.TidComparator);
+               //Collections.sort(srList, Resultat.TidComparator);
                
+               //Print bedste resultat for hver disciplin for et medlem
                for(StaevneResultat sr : srList){
                   System.out.println(sr);
+                  
+                  if(sr.getDisciplin().equals("Brystsvomning"){
+                     bedsteBrystsvoemning.add(sr);
+                  }
+                  if(sr.getDisciplin().equals("Hundesvomning"){
+                     bedsteHundesvoemning.add(sr);
+                  }
+                  if(sr.getDisciplin().equals("bedsteRygcrawl"){
+                     bedsteRygcrawl.add(sr);
+                  }
                }
                //get bedste tid per svoemmer
                
@@ -157,6 +176,7 @@ public class delTest {
             if(trList.size() > 0){
                Collections.sort(trList, Resultat.TidComparator);
                
+               //Get index hvor id går igen
                int index = Resultat.containsIDreturnIndex(resultatList, trList.get(0).getMedlemID());
                if(index >= 0){
                   //tjek for objecternes tid, fjern højeste
@@ -219,6 +239,11 @@ public class delTest {
          }
       }
       for(Resultat r : top5brystSvomning){
+         if(r != null){
+            System.out.println(r);
+         }
+      }
+      for(Resultat r : top5rygcrawl){
          if(r != null){
             System.out.println(r);
          }
