@@ -6,8 +6,8 @@ public class delTest {
       
       ArrayList<Resultat> alleResultater = new ArrayList<Resultat>();
       udfyldResultater(alleResultater);
-      ArrayList<Medlem> mList = new ArrayList<Medlem>();
-      udfyldMedlemmer(mList, alleResultater);
+      ArrayList<Medlem> alleMedlemmer = new ArrayList<Medlem>();
+      udfyldMedlemmer(alleMedlemmer, alleResultater);
 
       
       // for(Resultat r : alleResultater){
@@ -15,11 +15,11 @@ public class delTest {
 //          System.out.println(((StaevneResultat) r).getStaevne());
 //       }}
       while(true){
-      visMedlemmer(mList);
+      visMedlemmer(alleMedlemmer);
       
-      visKonkurrenceSvoemmere(mList);
+      visKonkurrenceSvoemmere(alleMedlemmer);
       
-      registrerMedlemmer(mList, alleResultater);
+      registrerMedlemmer(alleMedlemmer, alleResultater);
       }
 // 
 //       LocalDate d = LocalDate.parse("1990-09-09");
@@ -46,7 +46,7 @@ public class delTest {
       }
    }
    
-   public static void registrerMedlemmer(ArrayList<Medlem> mList, ArrayList<Resultat> alleResultater) throws Exception{
+   public static void registrerMedlemmer(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner console = new Scanner(System.in);
       
       System.out.println("Indtast fornavn");
@@ -64,17 +64,17 @@ public class delTest {
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       if(erMotionist){
-         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
-         mList.add(medlem);
+         Medlem medlem = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist);
+         alleMedlemmer.add(medlem);
          
       }
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
-         mList.add(m);
+         KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traenerNavn, alleResultater);
+         alleMedlemmer.add(m);
       }
-      gemMedlem(mList);
+      gemMedlem(alleMedlemmer);
 
    }
 
@@ -93,9 +93,9 @@ public class delTest {
       output.close();
    }
    
-   public static void visMedlemmer(ArrayList<Medlem> mList){
+   public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
       System.out.println("ALLE MEDLEMMER");
-      for(Medlem m : mList){
+      for(Medlem m : alleMedlemmer){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
          if(m instanceof KonkurrenceSvoemmer){
             System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
@@ -135,7 +135,7 @@ public class delTest {
          }
       }
    }
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer) throws Exception{
       System.out.println("KS'ers + resultater");
       ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
       //ArrayLists for bedste resultat for alle medlemmer for hver disciplin
@@ -147,7 +147,7 @@ public class delTest {
       
       
       
-      for(Medlem m : mList){
+      for(Medlem m : alleMedlemmer){
          if(m instanceof KonkurrenceSvoemmer){
             ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer) m).getStaevneResultater();
             if(srList.size() > 0){

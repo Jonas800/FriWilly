@@ -1,97 +1,100 @@
 import java.util.*;
-
+import java.io.*;
 public class Delfinen{
    public static void main(String [] args)throws Exception{
-      ArrayList<Medlem> mList = new ArrayList<Medlem>();
-      udfyldMedlemmer(mList);
-      visMenu(mList);
+      ArrayList<Resultat> alleResultater = new ArrayList<Resultat>();
+      ArrayList<Medlem> alleMedlemmer = new ArrayList<Medlem>();
+      udfyldMedlemmer(alleMedlemmer, alleResultater);
+      visMedlemmerIRestance(alleMedlemmer);
+      visMenu(alleMedlemmer);
    }
    
-   public static void visMenu(mList)throws Exception{
+   public static void visMenu(ArrayList<Medlem> alleMedlemmer) throws Exception{
       Scanner console = new Scanner(System.in);
       System.out.println("1: Formand\n2: Traener\n3: Kasserer\n4: Stop");
       int menuValg = console.nextInt();
       while(menuValg != 4){
          switch(menuValg){
             case 1:
-               formand();
+               formand(alleMedlemmer);
                break;
             case 2:
-               traener();
+               traener(alleMedlemmer);
                break;
             case 3:
-               kasserer();
+               kasserer(alleMedlemmer);
                break;
             default:
-               visMenu();
+               visMenu(alleMedlemmer);
                break;
          }
       }
    }
-   public static void formand(ArrayList<Medlem> mList)throws Exception{
+   public static void formand(ArrayList<Medlem> alleMedlemmer)throws Exception{
       Scanner console = new Scanner(System.in);
       System.out.println("1: Register medlemmer\n2: Se medlemmer\n3: Opdater medlemmer\n4: Tilbage til hovedmenu");
-         int formandValg = input.nextInt();
+         int formandValg = console.nextInt();
          switch(formandValg){
             case 1: 
-               registrerMedlemmer(ArrayList<Medlem> mList); // done
+               registrerMedlemmer(alleMedlemmer); // done
                break;
             case 2:
-               visMedlemmer(ArrayList<Medlem> mList); // done
+               visMedlemmer(alleMedlemmer); // done
                break;
             case 3:
-               opdaterMedlemmer(ArrayList<Medlem> mList);
+               //opdaterMedlemmer(alleMedlemmer);
                break;
             case 4:
-               visMenu(); // done
+               visMenu(alleMedlemmer); // done
                break;
             default:
                System.out.println("Ugyldigt input. Proev igen");
-               formand();
+               formand(alleMedlemmer);
                break;
                   
          }
    }
-   public static void traener(ArrayList<Medlem> mList)throws Exception{
+   
+   public static void traener(ArrayList<Medlem> alleMedlemmer)throws Exception{
       Scanner console = new Scanner(System.in);
       System.out.println("1: Se konkurrencesvoemmere\n2: Se top 5\n3: Opdater resultater\n4: Tilbage til hovedmenu");
       int traenerValg = console.nextInt();
       switch(traenerValg){
          case 1:
-            visKonkurrenceSvoemmere(ArrayList<Medlem> mList); //done
+            visKonkurrenceSvoemmere(alleMedlemmer); //done
             break;
          case 2:
-            seTopFem(ArrayList<Medlem> mList); //ikke endnu
+            //seTopFem(alleMedlemmer); //ikke endnu
             break;
          case 3:
-            opdaterResultater(ArrayList<Medlem> mList); // ikke endnu
+            //opdaterResultater(ArrayList<Medlem> alleMedlemmer); // ikke endnu
             break;
          case 4:
-            visMenu();
+            visMenu(alleMedlemmer);
             break;
          default:
             System.out.println("Ugyldigt input. Proev igen");
-            traener();
+            traener(alleMedlemmer);
             break;
          
       }
    }      
-   public static void Kasserer(ArrayList<Medlem> mList){
+   public static void kasserer(ArrayList<Medlem> alleMedlemmer){
       Scanner console = new Scanner(System.in);
       System.out.println("1: Se medlemmer i restance\n2: Se medlemmers indbetaling i kontigent\n3: Håndter kontigent\n4: Tilbage til hovedmenu");
       int kassererValg = console.nextInt();
       switch(kassererValg){
          case 1:
-            seRestance(ArrayList<Medlem> mList);
+            //seRestance(ArrayList<Medlem> alleMedlemmer);
             break;
          case 2:
-            seIndbetaling(ArrayList<Medlem> mList);
+            //seIndbetaling(ArrayList<Medlem> alleMedlemmer);
             break;
          case 3:
-            haandterKontigent(ArrayList<Medlem> mList);
+            //haandterKontigent(ArrayList<Medlem> alleMedlemmer);
             break;
          case 4:
-            visMenu();
+            //visMenu();
             break;
          default:
             System.out.println("Ugyldigt input. Proev igen");
@@ -99,7 +102,33 @@ public class Delfinen{
             
       }
    }
-   public static void registrerMedlemmer(ArrayList<Medlem> mList) throws Exception{
+   public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{
+      Scanner scanner = new Scanner(new File("medlemmer.txt"));
+
+      while(scanner.hasNextLine()){
+      
+         String line = scanner.nextLine();
+         Scanner data = new Scanner(line);
+         int id = data.nextInt();
+         String fornavn = data.next();
+         String efternavn = data.next();
+         String titel = data.next();
+         String fdato = data.next();
+         boolean aktivitetsform = data.nextBoolean();
+         String traener = data.next();
+         boolean erMotionist = data.nextBoolean();
+         
+         if(erMotionist){
+            list.add(new Medlem(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist));
+         }
+         else
+         {
+            list.add(new KonkurrenceSvoemmer(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traener, alleResultater));
+         }
+      }
+   }
+
+   public static void registrerMedlemmer(ArrayList<Medlem> alleMedlemmer) throws Exception{
       Scanner console = new Scanner(System.in);
       
       System.out.println("Indtast fornavn");
@@ -117,31 +146,31 @@ public class Delfinen{
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       if(erMotionist){
-         Medlem medlem = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, null, erMotionist);
-         mList.add(medlem);
+         Medlem medlem = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, null, erMotionist);
+         alleMedlemmer.add(medlem);
          
-         gemMedlem(mList);
+         gemMedlem(alleMedlemmer);
       }
       else{
          System.out.println("Indtast trænernavn");
          String traenerNavn = console.next();
-         Medlem m = new Medlem(mList.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn, erMotionist);
-         mList.add(m);
+         Medlem m = new Medlem(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, traenerNavn, erMotionist);
+         alleMedlemmer.add(m);
          
-         gemMedlem(mList);
+         gemMedlem(alleMedlemmer);
       }
    }
-   public static void visMedlemmer(ArrayList<Medlem> mList){
-      for(Medlem m : mList){
+   public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
+      for(Medlem m : alleMedlemmer){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //forkortet if/else sætning
          System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + m.getFdato() + " " + af + " " + m.getTraener());
       }
    }
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> mList) throws Exception{
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer) throws Exception{
       System.out.println("KS'ers");
       ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
 
-      for(Medlem m : mList){
+      for(Medlem m : alleMedlemmer){
          if(!m.erMotionist()){
             KonkurrenceSvoemmer ks = new KonkurrenceSvoemmer(m);
             ArrayList<StaevneResultat> srList = ks.getStaevneResultater();
@@ -162,6 +191,18 @@ public class Delfinen{
          }
       }
    }
+   public static void visMedlemmerIRestance(ArrayList<Medlem> alleMedlemmer){
+   //      System.out.printf("%-4s %-20s %-20s %-10s\n", 
+
+      for(Medlem m: alleMedlemmer){
+         if(m.getHarBetalt == false){
+            System.out.printf("%-4s %-20s %-20s %-10s\n", m.getID(), m.getAddresse(), m.get.TelefonNummer(), get.navn()); 
+         }
+      }
+  
+   
+   }
+  
 }
 
        
