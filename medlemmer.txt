@@ -1,6 +1,12 @@
-1 Jonas Jonas Formand  1990-09-09 true N/A true
-2 Muddi Muddi Slave  1997-10-10 true N/A false
-3 Muddi Muddi Slave  1997-10-10 true N/A false
-4 Michael Jesnen derp  1995-09-09 false N/A false
-5 Per Jensen Supermand  2000-10-10 false N/A true
-6 Hallo Hallo Hallo  1990-10-10 false raslle false
+1 Jonas Olsen Formand  1990-07-07 true true
+2 Muddi Heijo Sergeant  1995-10-10 false false Cay
+3 Benne Hey fsdgd  1995-10-10 false false Cay
+4 Jonas Olsen Formand  1990-07-07 true true
+5 Hans Heijo Sergeant  1995-10-10 false false Cay
+6 Simon Hey fsdgd  1995-10-10 false false Cay
+7 Bent Olsen Formand  1990-07-07 true true
+8 Jens Heijo Sergeant  1995-10-10 false false Cay
+9 Rasmus Hey fsdgd  1995-10-10 false false Cay
+10 Christian Olsen Formand  1990-07-07 true true
+11 Signe Heijo Sergeant  1995-10-10 false false Cay
+12 Bente Hey fsdgd  1995-10-10 false false Cay

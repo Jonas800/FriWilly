@@ -1,8 +1,16 @@
-2 Brystsvomning 10,30 2017-11-20 SuperSwim
-2 Hundesvomning 5,30 2017-11-20 SuperSwim
-2 Rygcrawl 9,30 2017-11-20 SuperSwim
-2 Brystsvomning 4,60 2017-11-20 SuperSwim
-3 Brystsvomning 10,90 2017-11-20 SuperSwim
-3 Hundesvomning 5,50 2017-11-20 SuperSwim
-3 Rygcrawl 2,30 2017-11-20 SuperSwim
-3 Brystsvomning 2,70 2017-11-20 SuperSwim
+1 2 Brystsvomning 10.3 2017-11-20 SuperSwim
+2 2 Hundesvomning 5.3 2017-11-20 SuperSwim
+3 2 Rygcrawl 9.3 2017-11-20 SuperSwim
+4 2 Brystsvomning 4.6 2017-11-20 SuperSwim
+5 3 Brystsvomning 10.9 2017-11-20 SuperSwim
+6 3 Hundesvomning 5.5 2017-11-20 SuperSwim
+7 3 Rygcrawl 2.3 2017-11-20 SuperSwim
+8 3 Brystsvomning 2.7 2017-11-20 SuperSwim
+9 4 Brystsvomning 10.9 2017-11-20 SuperSwim
+10 4 Brystsvomning 10.9 2017-11-20 SuperSwim
+11 5 Brystsvomning 10.9 2017-11-20 SuperSwim
+12 6 Brystsvomning 10.9 2017-11-20 SuperSwim
+13 7 Brystsvomning 10.9 2017-11-20 SuperSwim
+14 8 Brystsvomning 7.9 2017-11-20 SuperSwim
+15 9 Brystsvomning 10.9 2017-11-20 SuperSwim
+21 2 Crawl 1.0 1990-09-09 OL

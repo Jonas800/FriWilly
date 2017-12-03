@@ -10,38 +10,32 @@ public class delTest {
       udfyldMedlemmer(alleMedlemmer, alleResultater);
 
       
-      // for(Resultat r : alleResultater){
-//       if(r instanceof StaevneResultat){
-//          System.out.println(((StaevneResultat) r).getStaevne());
-//       }}
       while(true){
-      visMedlemmer(alleMedlemmer);
-      
-      visKonkurrenceSvoemmere(alleMedlemmer);
-      
-      registrerMedlemmer(alleMedlemmer, alleResultater);
+         visMedlemmer(alleMedlemmer);
+         
+         seTop5(alleMedlemmer, "Brystsvomning");
+         seTop5(alleMedlemmer, "Hundesvomning");
+         seTop5(alleMedlemmer, "Butterfly");
+         seTop5(alleMedlemmer, "Rygcrawl");
+         seTop5(alleMedlemmer, "Crawl");
+         
+         opretNytResultat(alleMedlemmer, alleResultater);
+         //registrerMedlemmer(alleMedlemmer, alleResultater);
       }
-// 
-//       LocalDate d = LocalDate.parse("1990-09-09");
-//       int alder = (int) java.time.temporal.ChronoUnit.YEARS.between(d, LocalDate.now());
-//       System.out.println(alder);
-//       System.out.println(LocalDate.now());
    }
    public static void udfyldResultater(ArrayList<Resultat> list) throws Exception{
       Scanner scanner = new Scanner(new File("staevneresultater.txt"));
       while(scanner.hasNextLine()){
          String line = scanner.nextLine();
-         Scanner data = new Scanner(line).useLocale(Locale.GERMANY);
-         int medlemID = data.nextInt();
-         StaevneResultat sr = new StaevneResultat(list.size() + 1, medlemID, data.next(), data.nextDouble(), data.next(), data.next());
+         Scanner data = new Scanner(line).useLocale(Locale.US);
+         StaevneResultat sr = new StaevneResultat(data.nextInt(), data.nextInt(), data.next(), data.nextDouble(), data.next(), data.next());
          list.add(sr);
       }
       scanner = new Scanner(new File("traeningsresultater.txt"));
       while(scanner.hasNextLine()){
          String line = scanner.nextLine();
-         Scanner data = new Scanner(line).useLocale(Locale.GERMANY);
-         int medlemID = data.nextInt();
-         TraeningsResultat tr = new TraeningsResultat(list.size() + 1, medlemID, data.next(), data.nextDouble(), data.next());
+         Scanner data = new Scanner(line).useLocale(Locale.US);
+         TraeningsResultat tr = new TraeningsResultat(data.nextInt(), data.nextInt(), data.next(), data.nextDouble(), data.next());
          list.add(tr);
       }
    }
@@ -82,7 +76,7 @@ public class delTest {
       String s = "";
       for(Medlem m : list){
          if(m instanceof KonkurrenceSvoemmer){
-            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist() + "\r\n";
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + " " + ((KonkurrenceSvoemmer) m).getTraener() + "\r\n";
          }
          else{
             s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + "\r\n";
@@ -107,6 +101,9 @@ public class delTest {
    }
    
    public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{
+      //Sikrer at medlemslisten er tom før vi ligger noget i den
+      list.clear();
+      
       Scanner scanner = new Scanner(new File("medlemmer.txt"));
 
       while(scanner.hasNextLine()){
@@ -119,7 +116,6 @@ public class delTest {
          String titel = data.next();
          String fdato = data.next();
          boolean aktivitetsform = data.nextBoolean();
-         String traener = data.next();
          boolean erMotionist = data.nextBoolean();
          
          if(erMotionist){
@@ -127,227 +123,150 @@ public class delTest {
          }
          else
          {
+            String traener = data.next();
             list.add(new KonkurrenceSvoemmer(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traener, alleResultater));
          }
       }
    }
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer) throws Exception{
-      System.out.println("KS'ers + resultater");
-      ArrayList<Resultat> resultatList = new ArrayList<Resultat>();
-      //ArrayLists for bedste resultat for alle medlemmer for hver disciplin
-      ArrayList<Resultat> bedsteBrystsvoemning = new ArrayList<Resultat>();
-      ArrayList<Resultat> bedsteHundesvoemning = new ArrayList<Resultat>();
-      ArrayList<Resultat> bedsteRygcrawl = new ArrayList<Resultat>();
-      ArrayList<Resultat> bedsteCrawl = new ArrayList<Resultat>();
-      ArrayList<Resultat> bedsteButterfly = new ArrayList<Resultat>();
-      
-      
+   public static void seTop5(ArrayList<Medlem> alleMedlemmer, String disciplin) throws Exception{
+      //ArrayList for bedste resultat for alle medlemmer for valgte disciplin
+      ArrayList<Resultat> topListe = new ArrayList<Resultat>();
       
       for(Medlem m : alleMedlemmer){
          if(m instanceof KonkurrenceSvoemmer){
+            //Henter resultater fra medlems objektet
             ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer) m).getStaevneResultater();
+            ArrayList<TraeningsResultat> trList = ((KonkurrenceSvoemmer) m).getTraeningsResultater();
+            
+            //Køres kun igennem hvis der eksisterer traeningsresultater 
             if(srList.size() > 0){
-               System.out.println(m);
+               //Sorterer listen til laveste tid på index 0, anden lavest på index 1, osv
                Collections.sort(srList, Resultat.TidComparator);
                
-               //Get bedste staevneresultat for hver disciplin for et medlem
-               int bs = 0, hs = 0, rc = 0, c = 0, bf = 0;
+               //Finder bedste staevneresultat for valgte disciplin for et medlem
+               int i = 0;
                for(StaevneResultat sr : srList){
-                  //System.out.println(sr);
-                  
-                  if(sr.getDisciplin().equals("Brystsvomning") && bs < 1){
-                     bedsteBrystsvoemning.add(sr);
-                     bs++;
-                  }
-                  if(sr.getDisciplin().equals("Hundesvomning") && hs < 1){
-                     bedsteHundesvoemning.add(sr);
-                     hs++;
-                  }
-                  if(sr.getDisciplin().equals("Rygcrawl") && rc < 1){
-                     bedsteRygcrawl.add(sr);
-                     rc++;
-                  }
-                  if(sr.getDisciplin().equals("Crawl") && c < 1){
-                     bedsteCrawl.add(sr);
-                     c++;
-                  }
-                  if(sr.getDisciplin().equals("Buttefly") && bf < 1){
-                     bedsteButterfly.add(sr);
-                     bf++;
+                  if(sr.getDisciplin().equals(disciplin) && i < 1){
+                     topListe.add(sr);
+                     i++;
                   }
                }
-               
-               //resultatList.add(srList.get(0));
             }
-            ArrayList<TraeningsResultat> trList = ((KonkurrenceSvoemmer) m).getTraeningsResultater();
+            //Køres kun igennem hvis der eksisterer traeningsresultater
             if(trList.size() > 0){
-               
-               //Hvis vi sorterer listen behøver vi kun køre if-sætningerne forneden igennem én gang for at finde bedste tid
+               //Hvis vi sorterer listen behøver vi senere kun køre if-sætningerne forneden igennem én gang for at finde bedste tid
                Collections.sort(trList, Resultat.TidComparator);
-               int bs = 0, hs = 0, rc = 0, c = 0, bf = 0;
 
-               //Get bedste staevneresultat for hver disciplin for et medlem
+               //Finder bedste result for hver disciplin for et medlem
                for(TraeningsResultat tr : trList){
-                  //System.out.println(sr);
-                  
-                  if(tr.getDisciplin().equals("Brystsvomning") && bs < 1){
-                     int index = Resultat.containsIDreturnIndex(bedsteBrystsvoemning, m.getID());
+                  int i = 0;
+                  if(tr.getDisciplin().equals(disciplin) && i == 0){
+                     //metode der tjekker om medlemID er unikt
+                     int index = Resultat.containsIDreturnIndex(topListe, tr.getMedlemID());
                      if(index >= 0){
                         //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
-                        if(tr.getTid() < bedsteBrystsvoemning.get(index).getTid()){
-                           bedsteBrystsvoemning.remove(index);
-                           bedsteBrystsvoemning.add(tr);
-                           bs++;
+                        if(tr.getTid() < topListe.get(index).getTid()){
+                           topListe.remove(index);
+                           topListe.add(tr);
+                           i++;
                         }
                      }
-                  }
-                  if(tr.getDisciplin().equals("Hundesvomning") && hs < 1){
-                     int index = Resultat.containsIDreturnIndex(bedsteHundesvoemning, m.getID());
-                     if(index >= 0){
-                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
-                        if(tr.getTid() < bedsteHundesvoemning.get(index).getTid()){
-                           bedsteHundesvoemning.remove(index);
-                           bedsteHundesvoemning.add(tr);
-                           hs++;
-                        }
+                     else{
+                        topListe.add(tr);
                      }
-                  }
-                  if(tr.getDisciplin().equals("Rygcrawl") && rc < 1){
-                     int index = Resultat.containsIDreturnIndex(bedsteRygcrawl, m.getID());
-                     if(index >= 0){
-                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
-                        if(tr.getTid() < bedsteRygcrawl.get(index).getTid()){
-                           bedsteRygcrawl.remove(index);
-                           bedsteRygcrawl.add(tr);
-                           bs++;
-                        }
-                     }
-
-                  }
-                  if(tr.getDisciplin().equals("Crawl") && c < 1){
-                     int index = Resultat.containsIDreturnIndex(bedsteCrawl, m.getID());
-                     if(index >= 0){
-                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
-                        if(tr.getTid() < bedsteCrawl.get(index).getTid()){
-                           bedsteCrawl.remove(index);
-                           bedsteCrawl.add(tr);
-                           c++;
-                        }
-                     }
-                  }
-                  if(tr.getDisciplin().equals("Buttefly") && bf < 1){
-                     int index = Resultat.containsIDreturnIndex(bedsteButterfly, m.getID());
-                     if(index >= 0){
-                        //tjek for objecternes tid, tidligere resultat hvis det nye er lavere
-                        if(tr.getTid() < bedsteButterfly.get(index).getTid()){
-                           bedsteButterfly.remove(index);
-                           bedsteButterfly.add(tr);
-                           bf++;
-                        }
-                     }                  }
-               }
-
-               //Get index hvor id går igen
-               int index = Resultat.containsIDreturnIndex(resultatList, m.getID());
-               if(index >= 0){
-                  //tjek for objecternes tid, fjern højeste
-                  if(trList.get(0).getTid() < resultatList.get(index).getTid()){
-                     resultatList.remove(index);
-                     resultatList.add(trList.get(0));
-                  }
+                  }         
                }
             }
          }
       }
-      //mangler endnu en sort, men for doven. TODO. anime først! også filtrering af discipliner
-//       Collections.sort(resultatList, Resultat.TidComparator);
-//       Collections.sort(resultatList, Resultat.TidComparator);
-
-      System.out.println("top5");
-      Collections.sort(bedsteBrystsvoemning, Resultat.TidComparator);
-      Collections.sort(bedsteHundesvoemning, Resultat.TidComparator);
-      Collections.sort(bedsteRygcrawl, Resultat.TidComparator);
-      Collections.sort(bedsteCrawl, Resultat.TidComparator);
-      Collections.sort(bedsteButterfly, Resultat.TidComparator);
-
-      System.out.println("BS");
-      for(Resultat r : bedsteBrystsvoemning){
-         System.out.println(r);
+      //Efter vi har fundet bedste resultat for hvert medlem, sorterer vi listen en sidste gang for at sortere mellem medlemmer
+      Collections.sort(topListe, Resultat.TidComparator);      
+      //Printer de første fem i listen ud
+      if(topListe.size() > 0){
+         System.out.println(disciplin);
+         System.out.printf("\n%-15s%-10s%-16s%-10s\n", "Navn", "Tid", "Dato", "Staevne");
+         for(int i = 0; i < 5; i++){
+            if(topListe.size() > i){
+               int medlemID = topListe.get(i).getMedlemID();
+               for(Medlem m2 : alleMedlemmer){
+                  if(m2.getID() == medlemID){
+                     System.out.printf("%-15s", m2.getFornavn() + " " + m2.getEfternavn());
+                  }
+               }
+               String s = "Traening";
+               if(topListe.get(i) instanceof StaevneResultat){
+                  s = ((StaevneResultat) topListe.get(i)).getStaevne();
+               }
+               System.out.printf("%-10.2f%-16s%-10s\n", topListe.get(i).getTid(), topListe.get(i).getDato(), s);   
+            }  
+         }
       }
-      System.out.println("HS");
-      for(Resultat r : bedsteHundesvoemning){
-         System.out.println(r);
+      else{
+         System.out.println(disciplin);
+         System.out.println("\nDer er ingen resultater for denne disciplin.");
       }
-      System.out.println("RC");
-      for(Resultat r : bedsteRygcrawl){
-         System.out.println(r);
-      }
-      System.out.println("C");
-      for(Resultat r : bedsteCrawl){
-         System.out.println(r);
-      }
-      System.out.println("BF");
-      for(Resultat r : bedsteButterfly){
-         System.out.println(r);
-      }
-      
-      // Resultat[] top5brystSvomning = new Resultat[5];
-//       Resultat[] top5hundeSvomning = new Resultat[5];
-//       Resultat[] top5rygcrawl = new Resultat[5];
-//       Resultat[] top5crawl = new Resultat[5];
-//       Resultat[] top5butterfly = new Resultat[5];
-//       
-//       int bs = 0;
-//       int rc = 0;
-//       int bf = 0;
-//       int c = 0;
-//       int hs = 0;
-//       for(Resultat r : resultatList){
-//          if(r.getDisciplin().equals("Brystsvomning") && bs < 5){
-//             top5brystSvomning[bs] = r;
-//             bs++;
-//          }
-//          if(r.getDisciplin().equals("Rygcrawl") && rc < 5){
-//             top5rygcrawl[rc] = r;
-//             rc++;
-//          }
-//          if(r.getDisciplin().equals("Butterfly") && bf < 5){
-//             top5butterfly[bf] = r;
-//             bf++;
-//          }
-//          if(r.getDisciplin().equals("Crawl") && c < 5){
-//             top5crawl[c] = r;
-//             c++;
-//          }
-//          if(r.getDisciplin().equals("Hundesvomning") && hs < 5){
-//             top5hundeSvomning[hs] = r;
-//             hs++;
-//          }
-//       }
-//       Arrays.sort(top5hundeSvomning, Resultat.TidComparator);
-//       Arrays.sort(top5rygcrawl, Resultat.TidComparator);
-//       Arrays.sort(top5butterfly, Resultat.TidComparator);
-//       Arrays.sort(top5crawl, Resultat.TidComparator);
-//       Arrays.sort(top5brystSvomning, Resultat.TidComparator);
-// 
-//       for(Resultat r : top5hundeSvomning){
-//          if(r != null){
-//             System.out.println(r);
-//          }
-//       }
-//       for(Resultat r : top5brystSvomning){
-//          if(r != null){
-//             System.out.println(r);
-//          }
-//       }
-//       for(Resultat r : top5rygcrawl){
-//          if(r != null){
-//             System.out.println(r);
-//          }
-//       }
    }
-   public static void visStaevneResultaterForEnSvoemmer(){
+   public static void opretNytResultat(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
+      //VIGTIGT: Husk at kalde udfyldMedlemmer så de får de nye informationer med
+      Scanner console = new Scanner(System.in);
+      
+      System.out.println("Vaelg svoemmer ud fra ID");
+      int id = alleResultater.get(alleResultater.size()-1).getID() + 1;
+      int medlemID = console.nextInt();
+      String disciplin = "";
+
+      int valg = 0;
+      do{
+         System.out.println("Vaelg disciplin\n1: Brystsvoemning\n2: Hundesvoemning\n3: Butterfly\n4: Rygcrawl\n5: Crawl");
+         valg = console.nextInt();
+         if(valg == 1){
+            disciplin = "Brystsvomning";
+         }
+         else if(valg == 2){
+            disciplin = "Hundesvomning";
+         }
+         else if(valg == 3){
+            disciplin = "Butterfly";
+         }
+         else if(valg == 4){
+            disciplin = "Rygcrawl";
+         }
+         else if(valg == 5){
+            disciplin = "Crawl";
+         }
+         else{
+            System.out.println("Indtast gyldigt tal");
+         }
+      }
+      while(valg != 1 && valg != 2 && valg != 3 && valg != 4 && valg != 5);
+      System.out.println("Indtast tid");
+      double tid = console.nextDouble();
+      System.out.println("Indtast dato");
+      String dato = console.next();
+      
+      valg = 0;
+      do{
+         System.out.println("Vaelg 1: Traening eller 2: Staevne");
+         valg = console.nextInt();
+         
+         if(valg == 1){
+            TraeningsResultat tr = new TraeningsResultat(alleResultater.size() + 1, medlemID, disciplin, tid, dato);
+            alleResultater.add(tr);
+         }
+         else if(valg == 2){
+            System.out.println("Indtast navn på staevne");
+            String staevne = console.next();
+            StaevneResultat sr = new StaevneResultat(alleResultater.size() + 1, medlemID, disciplin, tid, dato, staevne);
+            alleResultater.add(sr);
+         }
+         else{
+            System.out.println("Indtast gyldigt tal");
+         }
+      }
+      while(valg != 1 && valg != 2);
+      
+      Resultat.gemResultater(alleResultater);
+      udfyldMedlemmer(alleMedlemmer, alleResultater);
       
    }
-   
 }

@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.*;
+import java.io.*;
 public class Resultat{
    private int id;
    private double tid;
@@ -67,5 +68,27 @@ public class Resultat{
          }
       }
       return -1;
+   }
+   public static void gemResultater(ArrayList<Resultat> alleResultater) throws FileNotFoundException{
+      String traeningsResultater = "";
+      String staevneResultater = "";
+      
+      for(Resultat r : alleResultater){
+         if(r instanceof TraeningsResultat){
+            traeningsResultater += ((TraeningsResultat) r).toString() + "\r\n";
+         }
+         else if(r instanceof StaevneResultat){
+            staevneResultater += ((StaevneResultat) r).toString() + "\r\n";
+         }
+      }
+      
+      PrintStream output = new PrintStream(new File("staevneresultater.txt"));
+      output.print(staevneResultater);
+      output.close();
+
+      output = new PrintStream(new File("traeningsresultater.txt"));
+      output.print(traeningsResultater);
+      output.close();
+
    } 
 }

@@ -9,7 +9,7 @@ public class StaevneResultat extends Resultat{
    }
  
    public String toString(){
-      return super.getID() + " " + super.getMedlemID() + " " + super.getDisciplin() + " " + super.getTid() + " " + staevne + " " + super.getDato();
+      return super.getID() + " " + super.getMedlemID() + " " + super.getDisciplin() + " " + super.getTid() + " " + super.getDato() + " " + staevne;
    }
    public String getStaevne(){
       return staevne;
