@@ -187,10 +187,10 @@ public class Delfinen{
    }
    public static void visMedlemmerIRestance(ArrayList<Medlem> alleMedlemmer){
    //      System.out.printf("%-4s %-20s %-20s %-10s\n", 
-
+//kontigent
       for(Medlem m: alleMedlemmer){
          if(m.getHarBetalt() == false){
-            System.out.printf("%-4s %-20s %-20s %-10s\n", m.getID(), m.getAddresse(), m.get.TelefonNummer(), get.navn()); 
+            System.out.printf("%-4s %-20s %-20s %-10s\n", m.getID(), m.getFornavn(), m.getEfternavn(), m.getKontigent()); 
          }
       }
   
