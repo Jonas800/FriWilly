@@ -40,16 +40,12 @@ public class KonkurrenceSvoemmer extends Medlem{
             }
          }
       }
-      // Scanner scanner = new Scanner(new File("traeningsresultater.txt"));
-//       while(scanner.hasNextLine()){
-//          String line = scanner.nextLine();
-//          Scanner data = new Scanner(line).useLocale(Locale.GERMANY);
-//          int medlemID = data.nextInt();
-//          if(medlemID == super.getID()){
-//             TraeningsResultat tr = new TraeningsResultat(1, medlemID, data.next(), data.nextDouble(), data.next());
-//             list.add(tr);
-//          }
-//       }
+   }
+   public void addToStaevneResultater(StaevneResultat sr){
+      this.SRList.add(sr);
+   }
+   public void addToTraeningsResultater(TraeningsResultat sr){
+      this.TRList.add(tr);
    }
    
    public ArrayList<StaevneResultat> getStaevneResultater(){

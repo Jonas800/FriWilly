@@ -14,3 +14,4 @@
 14 8 Brystsvomning 7.9 2017-11-20 SuperSwim
 15 9 Brystsvomning 10.9 2017-11-20 SuperSwim
 21 2 Crawl 1.0 1990-09-09 OL
+23 2 Crawl 2.0 1990-09-09 OL

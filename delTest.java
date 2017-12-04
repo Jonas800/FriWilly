@@ -13,11 +13,13 @@ public class delTest {
       while(true){
          visMedlemmer(alleMedlemmer);
          
-         seTop5(alleMedlemmer, "Brystsvomning");
-         seTop5(alleMedlemmer, "Hundesvomning");
-         seTop5(alleMedlemmer, "Butterfly");
-         seTop5(alleMedlemmer, "Rygcrawl");
-         seTop5(alleMedlemmer, "Crawl");
+         visKonkurrenceSvoemmereOgResultater(alleMedlemmer);
+         
+         // seTop5(alleMedlemmer, "Brystsvomning");
+//          seTop5(alleMedlemmer, "Hundesvomning");
+//          seTop5(alleMedlemmer, "Butterfly");
+//          seTop5(alleMedlemmer, "Rygcrawl");
+//          seTop5(alleMedlemmer, "Crawl");
          
          opretNytResultat(alleMedlemmer, alleResultater);
          //registrerMedlemmer(alleMedlemmer, alleResultater);
@@ -207,6 +209,9 @@ public class delTest {
    }
    public static void opretNytResultat(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
       //VIGTIGT: Husk at kalde udfyldMedlemmer så de får de nye informationer med
+      visKonkurrenceSvoemmere(alleMedlemmer);
+
+      
       Scanner console = new Scanner(System.in);
       
       System.out.println("Vaelg svoemmer ud fra ID");
@@ -249,13 +254,13 @@ public class delTest {
          valg = console.nextInt();
          
          if(valg == 1){
-            TraeningsResultat tr = new TraeningsResultat(alleResultater.size() + 1, medlemID, disciplin, tid, dato);
+            TraeningsResultat tr = new TraeningsResultat(id, medlemID, disciplin, tid, dato);
             alleResultater.add(tr);
          }
          else if(valg == 2){
             System.out.println("Indtast navn på staevne");
             String staevne = console.next();
-            StaevneResultat sr = new StaevneResultat(alleResultater.size() + 1, medlemID, disciplin, tid, dato, staevne);
+            StaevneResultat sr = new StaevneResultat(id, medlemID, disciplin, tid, dato, staevne);
             alleResultater.add(sr);
          }
          else{
@@ -269,7 +274,46 @@ public class delTest {
       
    }
    
-   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer){
+   public static void visKonkurrenceSvoemmereOgResultater(ArrayList<Medlem> alleMedlemmer){
       //Print alle konkurrencesvoemmere
+      System.out.println("Konkurrencesvoemmere og deres resultater");
+      for(Medlem m : alleMedlemmer){
+         if(m instanceof KonkurrenceSvoemmer){
+            System.out.println("________________________________________________________\n\n" + m.getID() + ": " + m.getFornavn() + " " + m.getEfternavn() + "\n");
+            
+            
+            ArrayList<TraeningsResultat> trList = ((KonkurrenceSvoemmer)m).getTraeningsResultater();
+            if(trList.size() > 0){
+               System.out.println("Traening:");
+               
+               System.out.printf("%-10s%-16s%-16s\n", "Tid", "Dato", "Disciplin"); 
+               for(TraeningsResultat tr : trList){
+                  System.out.printf("%-10.2f%-16s%-16s\n", tr.getTid(), tr.getDato(), tr.getDisciplin()); 
+               }
+               System.out.println();
+            }
+            ArrayList<StaevneResultat> srList = ((KonkurrenceSvoemmer)m).getStaevneResultater();
+            if(srList.size() > 0){
+               System.out.println("Staevner:");
+               System.out.printf("%-10s%-16s%-16s%-16s\n", "Tid", "Dato", "Disciplin", "Staevne"); 
+      
+               for(StaevneResultat sr : srList){
+                  System.out.printf("%-10.2f%-16s%-16s%-16s\n", sr.getTid(), sr.getDato(), sr.getDisciplin(), sr.getStaevne()); 
+               }
+            }
+            if(srList.size() == 0 && trList.size() == 0){
+               System.out.println("Ingen resultater for dette medlem.");
+            }         
+         }
+      }
+   }
+   
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer){
+      System.out.printf("%-5s%-16s\n", "ID", "Navn");
+      for(Medlem m : alleMedlemmer){
+         if(m instanceof KonkurrenceSvoemmer){
+            System.out.printf("%-5d%-16s\n", m.getID(), m.getFornavn() + " " + m.getEfternavn());
+         }
+      }
    }
 }
