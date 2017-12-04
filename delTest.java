@@ -182,8 +182,8 @@ public class delTest {
       //Efter vi har fundet bedste resultat for hvert medlem, sorterer vi listen en sidste gang for at sortere mellem medlemmer
       Collections.sort(topListe, Resultat.TidComparator);      
       //Printer de første fem i listen ud
+      System.out.println(disciplin);
       if(topListe.size() > 0){
-         System.out.println(disciplin);
          System.out.printf("\n%-15s%-10s%-16s%-10s\n", "Navn", "Tid", "Dato", "Staevne");
          for(int i = 0; i < 5; i++){
             if(topListe.size() > i){
@@ -202,7 +202,6 @@ public class delTest {
          }
       }
       else{
-         System.out.println(disciplin);
          System.out.println("\nDer er ingen resultater for denne disciplin.");
       }
    }
@@ -268,5 +267,9 @@ public class delTest {
       Resultat.gemResultater(alleResultater);
       udfyldMedlemmer(alleMedlemmer, alleResultater);
       
+   }
+   
+   public static void visKonkurrenceSvoemmere(ArrayList<Medlem> alleMedlemmer){
+      //Print alle konkurrencesvoemmere
    }
 }
