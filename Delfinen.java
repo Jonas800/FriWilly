@@ -79,7 +79,7 @@ public class Delfinen{
          
       }
    }      
-   public static void kasserer(ArrayList<Medlem> alleMedlemmer){
+   public static void kasserer(ArrayList<Medlem> alleMedlemmer) throws Exception{
       Scanner console = new Scanner(System.in);
       System.out.println("1: Se medlemmer i restance\n2: Se medlemmers indbetaling i kontigent\n3: Håndter kontigent\n4: Tilbage til hovedmenu");
       int kassererValg = console.nextInt();
@@ -91,7 +91,8 @@ public class Delfinen{
             //seIndbetaling(ArrayList<Medlem> alleMedlemmer);
             break;
          case 3:
-            //haandterKontigent(ArrayList<Medlem> alleMedlemmer);
+            haandterKontingent(alleMedlemmer);
+            
             break;
          case 4:
             //visMenu();
@@ -103,6 +104,9 @@ public class Delfinen{
       }
    }
    public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{
+      //Sikrer at medlemslisten er tom før vi ligger noget i den
+      list.clear();
+      
       Scanner scanner = new Scanner(new File("medlemmer.txt"));
 
       while(scanner.hasNextLine()){
@@ -115,7 +119,6 @@ public class Delfinen{
          String titel = data.next();
          String fdato = data.next();
          boolean aktivitetsform = data.nextBoolean();
-         String traener = data.next();
          boolean erMotionist = data.nextBoolean();
          
          if(erMotionist){
@@ -123,6 +126,7 @@ public class Delfinen{
          }
          else
          {
+            String traener = data.next();
             list.add(new KonkurrenceSvoemmer(id, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, traener, alleResultater));
          }
       }
@@ -175,7 +179,7 @@ public class Delfinen{
       String s = "";
       for(Medlem m : list){
          if(m instanceof KonkurrenceSvoemmer){
-            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist() + "\r\n";
+            s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + " " + ((KonkurrenceSvoemmer) m).getTraener() + "\r\n";
          }
          else{
             s += m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist() + "\r\n";
@@ -185,9 +189,9 @@ public class Delfinen{
       output.print(s);
       output.close();
    }
+
    public static void visMedlemmerIRestance(ArrayList<Medlem> alleMedlemmer){
-   //      System.out.printf("%-4s %-20s %-20s %-10s\n", 
-//kontigent
+      System.out.printf("%-4s %-20s %-20s %-10s\n", "ID", "Fornavn", "Efternavn", "Kontigent"); 
       for(Medlem m: alleMedlemmer){
          if(m.getHarBetalt() == false){
             System.out.printf("%-4s %-20s %-20s %-10s\n", m.getID(), m.getFornavn(), m.getEfternavn(), m.getKontigent()); 
@@ -196,7 +200,23 @@ public class Delfinen{
   
    
    }
-  
+   public static void haandterKontingent(ArrayList<Medlem> alleMedlemmer) throws Exception{
+      //vismedlemmer
+      
+      Scanner console = new Scanner(System.in);
+      System.out.println("Indtast ID på Medlem der skal ændres");
+      int ID = console.nextInt();
+      System.out.println("Medlem skal ændres til\n1: Har betalt\n2: Er i restance");
+      boolean valg = console.nextInt() == 1 ? true : false;
+      for(Medlem m: alleMedlemmer){
+         if (m.getID() == ID){
+            m.setHarBetalt(valg);
+         
+         }    
+      }
+      
+      gemMedlem(alleMedlemmer);
+   }  
 }
 
        

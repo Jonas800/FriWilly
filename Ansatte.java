@@ -6,10 +6,10 @@ public class Ansatte{
    private String efterNavn;
    
    
-   public Ansatte(String titel, String forNavn, String efterNavn{
-      this.title = titel;
+   public Ansatte(String titel, String forNavn, String efterNavn) {
+      this.titel = titel;
       this.forNavn = forNavn;
-      this.lastName = lastName;
+      this.efterNavn = efterNavn;
    }
    
    public void gemIFil(String filename)throws Exception{
