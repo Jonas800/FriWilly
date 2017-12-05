@@ -88,6 +88,12 @@ public class Medlem{
    public void setFornavn(String fornavn){
       this.fornavn = fornavn;
    }
+   public void setTitel(String titel){
+      this.titel = titel;
+   }
+   public void setFdato(String fdatoString){
+      this.fdato = LocalDate.parse(fdatoString);
+   }
    public void setEfternavn(String efternavn){
       this.efternavn = efternavn;
    }
@@ -96,6 +102,9 @@ public class Medlem{
    }
    public void setAktivitetsform(boolean aktivitetsform){
       this.aktivitetsform = aktivitetsform;
+   }
+   public void setErMotionist(boolean erMotionist){
+      this.erMotionist = erMotionist;
    }
    public boolean getHarBetalt(){
       return harBetalt;

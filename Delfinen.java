@@ -11,7 +11,9 @@ public class Delfinen{
    
    public static void visMenu(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
       Scanner console = new Scanner(System.in);
-      System.out.println("1: Formand\n2: Traener\n3: Kasserer\n0: Stop");
+      System.out.println("!Velkommen til Delfinen!\n");
+      System.out.println("1: Formand\n2: Traener\n3: Kasserer\n0: Stop \n");
+      System.out.println("Vælg venligst et menupunkt: \n");
       int menuValg = console.nextInt();
       while(menuValg != 4){
          switch(menuValg){
@@ -42,7 +44,7 @@ public class Delfinen{
                visMedlemmer(alleMedlemmer); // done
                break;
             case 3:
-               //opdaterMedlemmer(alleMedlemmer);
+               opdaterMedlemmer(alleMedlemmer, alleResultater);
                break;
             case 0:
                visMenu(alleMedlemmer, alleResultater); // done
@@ -175,6 +177,104 @@ public class Delfinen{
       gemMedlem(alleMedlemmer);
 
    }
+   
+   public static void opdaterMedlemmer(ArrayList<Medlem> alleMedlemmer, ArrayList<Resultat> alleResultater) throws Exception{
+      Scanner scanner = new Scanner(new File("medlemmer.txt"));
+      Scanner console = new Scanner(System.in);
+      while(scanner.hasNextLine()){
+      System.out.println("Vælg et id for at ændre et medlem: ");
+      tjek(console);
+      int id = console.nextInt();
+      boolean quit = false;
+         do{
+            System.out.println("\nHvad kunne du godt tænke dig at ændre i? \n ");
+            System.out.println("1. Fornavn");
+            System.out.println("2. Efternavn");
+            System.out.println("3. Titel");
+            System.out.println("4. Fødselsdato");
+            System.out.println("5. Aktiv eller passiv ");
+            System.out.println("6. Aktivitetsform");
+            System.out.println("0. log ud");
+            System.out.print("\nVælg venligst et menupunkt: \n");
+            tjek(console);
+            int valg = console.nextInt();
+            switch(valg){
+               case 1:  
+                  System.out.println("Indtast fornavn");
+                  String fornavn = console.next();
+                    for (Medlem m : alleMedlemmer) {
+                     if (m.getID() == valg) {
+                        m.setFornavn(fornavn);
+                        gemMedlem(alleMedlemmer);
+                        }
+                     }
+                  break;
+               case 2:
+                  System.out.println("Indtast efternavn");
+                  String efternavn = console.next();
+                  for (Medlem m : alleMedlemmer) {
+                     if (m.getID() == valg) {
+                        m.setEfternavn(efternavn);
+                        gemMedlem(alleMedlemmer);
+                     }
+                  }
+                  break;
+               case 3:
+                  System.out.println("Indtast title");
+                  String titel = console.next();
+                  for (Medlem m : alleMedlemmer) {
+                     if (m.getID() == valg) {
+                        m.setTitel(titel);
+                        gemMedlem(alleMedlemmer);
+                     }                     
+                  }
+                  break;
+               case 4:
+                  System.out.println("Indtast fødselsdato (yyyy-MM-dd)");
+                  String fdato = console.next();
+                  for (Medlem m : alleMedlemmer) {
+                     if (m.getID() == valg) {
+                        m.setFdato(fdato);
+                        gemMedlem(alleMedlemmer);           
+                     }
+                  }
+                  break;
+               case 5:
+                  System.out.println("Vælg om medlemmet er 1: aktivt eller 2: passivt");
+                  int aktivitetsformValg = console.nextInt();
+                  boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsform = 1? hvis ja, return true, else return false
+                  for (Medlem m : alleMedlemmer) {
+                     if (m.getID() == valg) {
+                        m.setAktivitetsform(aktivitetsform);
+                        gemMedlem(alleMedlemmer);
+                     }
+                  }
+                  break;
+               case 6:
+                  System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesv¯mmer");
+                  boolean erMotionist = console.nextInt() == 1 ? true : false;
+                  for (Medlem m : alleMedlemmer) {
+                     if(erMotionist){ 
+                        m.setErMotionist(erMotionist);
+                        gemMedlem(alleMedlemmer);
+                     } else {
+                        m.setErMotionist(erMotionist);
+                        System.out.println("Indtast trÊnernavn");
+                        String traenerNavn = console.next();
+                        gemMedlem(alleMedlemmer);
+                     }
+                  }
+                  break;
+               case 0:
+                  quit = true;
+                  formand(alleMedlemmer, alleResultater);
+                  break;
+               default:
+            }
+         }while (!quit);              
+         System.out.println("Tak og vær venlig at komme igen!\n");
+      }
+   }
 
    public static void gemMedlem(ArrayList<Medlem> list) throws Exception{
       String s = "";
@@ -193,19 +293,26 @@ public class Delfinen{
    
    public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
       System.out.println("ALLE MEDLEMMER");
-      System.out.printf("%-5s%-20s%-15s%-16s%-15s%-15s%-15s\n", "ID", "Navn", "Titel", "Foedselsdag", "Aktivitetsform", "Medlemstype", "Traener");
       for(Medlem m : alleMedlemmer){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
-         String em = m.erMotionist() == true ? "Motionist" : "Konkurrence";
          if(m instanceof KonkurrenceSvoemmer){
-            System.out.printf("%-5d%-20s%-15s%-16s%-15s%-15s%-15s\n", m.getID(), m.getFornavn() + " " + m.getEfternavn(), m.getTitel(), m.getFdato(), af, em, ((KonkurrenceSvoemmer) m).getTraener());
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
          }
          else{
-            System.out.printf("%-5d%-20s%-15s%-16s%-15s%-15s\n",m.getID(), m.getFornavn() + " " + m.getEfternavn(), m.getTitel(), m.getFdato(), af, em);
+            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist());
          }
       }
    }
    
+   public static String tjek(Scanner input){                   
+      String number = null;                                      
+      while (!input.hasNextInt()) {  
+         number = input.next();                            
+         System.out.println("Ugyldigt indput, venligst indsats et nummer!");  
+      }
+      return number;                                              
+   }
+      
    public static void udfyldMedlemmer(ArrayList<Medlem> list, ArrayList<Resultat> alleResultater) throws Exception{
       //Sikrer at medlemslisten er tom før vi ligger noget i den
       list.clear();
