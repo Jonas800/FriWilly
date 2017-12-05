@@ -193,13 +193,15 @@ public class Delfinen{
    
    public static void visMedlemmer(ArrayList<Medlem> alleMedlemmer){
       System.out.println("ALLE MEDLEMMER");
+      System.out.printf("%-5s%-20s%-15s%-16s%-15s%-15s%-15s\n", "ID", "Navn", "Titel", "Foedselsdag", "Aktivitetsform", "Medlemstype", "Traener");
       for(Medlem m : alleMedlemmer){
          String af = m.getAktivitetsform() == true ? "Aktivt" : "Passivt"; //ternary operation: er aktivitetsform = true? hvis ja, return en String med Aktivt, else return en String med passivt
+         String em = m.erMotionist() == true ? "Motionist" : "Konkurrence";
          if(m instanceof KonkurrenceSvoemmer){
-            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + ((KonkurrenceSvoemmer) m).getTraener() + " " + m.erMotionist());
+            System.out.printf("%-5d%-20s%-15s%-16s%-15s%-15s%-15s\n", m.getID(), m.getFornavn() + " " + m.getEfternavn(), m.getTitel(), m.getFdato(), af, em, ((KonkurrenceSvoemmer) m).getTraener());
          }
          else{
-            System.out.println(m.getID() + " " + m.getFornavn() + " " + m.getEfternavn() + " " + m.getTitel() + " " + " " + m.getFdato() + " " + m.getAktivitetsform() + " " + m.erMotionist());
+            System.out.printf("%-5d%-20s%-15s%-16s%-15s%-15s\n",m.getID(), m.getFornavn() + " " + m.getEfternavn(), m.getTitel(), m.getFdato(), af, em);
          }
       }
    }
