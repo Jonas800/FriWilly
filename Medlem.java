@@ -16,7 +16,7 @@ public class Medlem{
    private boolean harBetalt;
    private LocalDate fdato;
    
-   public Medlem(int id, String fornavn, String efternavn, String titel, String fdatoString, boolean aktivitetsform, boolean erMotionist) throws Exception{
+   public Medlem(int id, String fornavn, String efternavn, String titel, String fdatoString, boolean aktivitetsform, boolean erMotionist, boolean harBetalt) throws Exception{
       this.alder = setAlder(fdatoString);
       this.fdato = LocalDate.parse(fdatoString);
       this.id = id;
@@ -25,6 +25,7 @@ public class Medlem{
       this.titel = titel;
       this.aktivitetsform = aktivitetsform;
       this.erMotionist = erMotionist;
+      this.harBetalt = harBetalt;
       setKontigent();
    }
    public String toString(){

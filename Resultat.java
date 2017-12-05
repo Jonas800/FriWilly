@@ -33,7 +33,14 @@ public class Resultat{
          }
       }
    };
-   
+   public static Comparator<Resultat> IDComparator = new Comparator<Resultat>(){
+      public int compare(Resultat r1, Resultat r2){
+         int id1 = r1.getID();
+         int id2 = r2.getID();
+         return id1 - id2;
+      }
+   };
+
    
    public Resultat(int id, int medlemID, double tid, String datoString, String disciplin){
       this.id = id;
