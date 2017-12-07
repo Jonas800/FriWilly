@@ -487,7 +487,6 @@ public class Delfinen{
          System.out.println("3. Titel");
          System.out.println("4. Foedselsdato");
          System.out.println("5. Aktiv eller passiv ");
-         System.out.println("6. Aktivitetsform");
          System.out.println("0. log ud");
          System.out.print("\nVaelg venligst et menupunkt: \n");
          tjek(console);
@@ -541,23 +540,6 @@ public class Delfinen{
                   if (m.getID() == id) {
                      m.setAktivitetsform(aktivitetsform);
                      gemMedlem(alleMedlemmer);
-                  }
-               }
-               break;
-            case 6:
-               System.out.println("Vaelg om medlemmet er 1: motionist eller 2: konkurrencesvoemmer");
-               boolean erMotionist = console.nextInt() == 1 ? true : false;
-               for (Medlem m : alleMedlemmer) {
-                  if(m.getID() == id){
-                     if(erMotionist){ 
-                        m.setErMotionist(erMotionist);
-                        gemMedlem(alleMedlemmer);
-                     } else {
-                        m.setErMotionist(erMotionist);
-                        System.out.println("Indtast tr nernavn");
-                        String traenerNavn = console.next();
-                        gemMedlem(alleMedlemmer);
-                     }
                   }
                }
                break;
