@@ -152,12 +152,12 @@ public class Delfinen{
       String efternavn = console.next();
       System.out.println("Indtast title");
       String titel = console.next();
-      System.out.println("Indtast fødselsdato (yyyy-MM-dd)");
+      System.out.println("Indtast foedselsdato (yyyy-MM-dd)");
       String fdato = console.next();
-      System.out.println("Vælg om medlemmet er 1: aktivt eller 2: passivt");
+      System.out.println("Vaelg om medlemmet er 1: aktivt eller 2: passivt");
       int aktivitetsformValg = console.nextInt();
       boolean aktivitetsform = aktivitetsformValg == 1 ? true : false; //ternary operation: er aktivitetsformValg = 1? hvis ja, return true, else return false
-      System.out.println("Vælg om medlemmet er 1: motionist eller 2: konkurrencesvømmer");
+      System.out.println("Vaelg om medlemmet er 1: motionist eller 2: konkurrencesvoemmer");
       boolean erMotionist = console.nextInt() == 1 ? true : false;
       
       
@@ -167,7 +167,7 @@ public class Delfinen{
          
       }
       else{
-         System.out.println("Indtast trænernavn");
+         System.out.println("Indtast traenernavn");
          String traenerNavn = console.next();
          KonkurrenceSvoemmer m = new KonkurrenceSvoemmer(alleMedlemmer.size() + 1, fornavn, efternavn, titel, fdato, aktivitetsform, erMotionist, false, traenerNavn, alleResultater);
          alleMedlemmer.add(m);
@@ -479,8 +479,6 @@ public class Delfinen{
       tjek(console);
       int id = console.nextInt();
       do{
-         
-
          System.out.println("\nHvad kunne du godt taenke dig at aendre i? \n ");
          System.out.println("1. Fornavn");
          System.out.println("2. Efternavn");
@@ -495,12 +493,12 @@ public class Delfinen{
             case 1:  
                System.out.println("Indtast fornavn");
                String fornavn = console.next();
-                 for (Medlem m : alleMedlemmer) {
+               for (Medlem m : alleMedlemmer) {
                   if (m.getID() == id) {
                      m.setFornavn(fornavn);
                      gemMedlem(alleMedlemmer);
-                     }
                   }
+               }
                break;
             case 2:
                System.out.println("Indtast efternavn");
@@ -543,6 +541,23 @@ public class Delfinen{
                   }
                }
                break;
+//             case 6:
+//                System.out.println("Vaelg om medlemmet er 1: motionist eller 2: konkurrencesvoemmer");
+//                boolean erMotionist = console.nextInt() == 1 ? true : false;
+//                for (Medlem m : alleMedlemmer) {
+//                   if(m.getID() == id){
+//                      if(erMotionist){ 
+//                         m.setErMotionist(erMotionist);
+//                         gemMedlem(alleMedlemmer);
+//                      } else {
+//                         m.setErMotionist(erMotionist);
+//                         System.out.println("Indtast trÊnernavn");
+//                         String traenerNavn = console.next();
+//                         gemMedlem(alleMedlemmer);
+//                      }
+//                   }
+//                }
+//                break;
             case 0:
                quit = true;
                formand(alleMedlemmer, alleResultater);
